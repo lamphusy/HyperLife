@@ -1,4 +1,4 @@
-package com.hyperlife.Adapter;
+package com.hyperlife.adapter;
 
 public class WorkoutListViewAdapter {
 }

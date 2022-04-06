@@ -1,4 +1,4 @@
-package com.hyperlife.Model;
+package com.hyperlife.model;
 
 public class AppUsageInfo {
 }
