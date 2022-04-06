@@ -1,6 +1,7 @@
 package com.hyperlife;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
@@ -22,8 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportActionBar().hide();
+        
 
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
