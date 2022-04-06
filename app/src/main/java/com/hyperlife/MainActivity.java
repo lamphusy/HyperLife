@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
