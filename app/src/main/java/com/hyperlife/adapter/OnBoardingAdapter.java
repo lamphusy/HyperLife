@@ -44,7 +44,7 @@ public class OnBoardingAdapter extends RecyclerView.Adapter<OnBoardingAdapter.On
         OnBoardingViewHolder(@NonNull View itemView) {
             super(itemView);
             this.imageOnBoarding = imageOnBoarding;
-            imageOnBoarding = itemView.findViewById(R.id.imageOnBoarding);
+            imageOnBoarding = itemView.findViewById(R.id.imageOnboarding);
         }
 
 
