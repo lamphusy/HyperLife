@@ -1,4 +1,4 @@
-package com.hyperlife.Fragment;
+package com.hyperlife.fragment;
 
 public class WorkoutFragment {
 }

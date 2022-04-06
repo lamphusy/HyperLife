@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "172837360686",
+    "project_id": "uit-hyperlife",
+    "storage_bucket": "uit-hyperlife.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:172837360686:android:a9440726342590e0a3bbbf",
+        "android_client_info": {
+          "package_name": "com.hyperlife"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "172837360686-m8s6clo4fsi3ln3aq2tapirol6r8nt5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsGCNwQSsp3qK2eDp4EyT6R00QgG4WH_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "172837360686-m8s6clo4fsi3ln3aq2tapirol6r8nt5a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
