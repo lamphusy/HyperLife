@@ -155,11 +155,11 @@ public class SignInActivity extends AppCompatActivity {
     private void addControls() {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        txtEmail = (EditText) findViewById(R.id.txtEmail);
-        txtPassword = (EditText) findViewById(R.id.txtPassword);
-        btnSignIn = (Button) findViewById(R.id.btnSignIn);
-        btnSignUp = (Button) findViewById(R.id.btnSignUp);
-        btnForgot = (Button) findViewById(R.id.btnForgot);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        txtEmail = (EditText) findViewById(R.id.et_email_signin);
+        txtPassword = (EditText) findViewById(R.id.et_password_signin);
+        btnSignIn = (Button) findViewById(R.id.btnSignin);
+        btnSignUp = (Button) findViewById(R.id.jumptosignup);
+        btnForgot = (Button) findViewById(R.id.forgotpass);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
     }
 }

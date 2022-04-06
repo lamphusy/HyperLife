@@ -118,7 +118,7 @@
             android:layout_below="@+id/tv_othermethod">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btGoogle"
+                android:id="@+id/btnGoogle"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:background="@drawable/button_bg_green"
@@ -146,7 +146,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/btGoogle"
+                app:layout_constraintStart_toEndOf="@+id/btnGoogle"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
