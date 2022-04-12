@@ -25,6 +25,11 @@ public class MainActivity extends AppCompatActivity {
 
 //        getSupportActionBar().hide();
 
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,HomeFragment.class,null);
+        fragmentTransaction.commit();
+
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
