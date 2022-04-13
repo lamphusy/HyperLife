@@ -236,6 +236,7 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("name", userName);
         user.put("email", userEmail);
+        user.put("passwprd", password);
         user.put("gender", gender);
         user.put("join_date", today.toString());
         user.put("date_of_birth", dateOfBirth);

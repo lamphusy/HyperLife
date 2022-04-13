@@ -32,7 +32,7 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_email_signin"
+                android:id="@+id/txtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -48,14 +48,14 @@
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_password_signin"
+                android:id="@+id/txtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/forgotpass"
+            android:id="@+id/btnForgot"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/password_input_layout_signin"
@@ -72,10 +72,10 @@
             tools:ignore="RtlCompat" />
 
         <Button
-            android:id="@+id/btnSignin"
+            android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/forgotpass"
+            android:layout_below="@+id/btnForgot"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/button_bg_green"
@@ -83,10 +83,10 @@
             android:textColor="#fff" />
 
         <Button
-            android:id="@+id/jumptosignup"
+            android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/btnSignin"
+            android:layout_below="@+id/btnSignIn"
             android:layout_gravity="right"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
@@ -101,7 +101,7 @@
             android:id="@+id/tv_othermethod"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/jumptosignup"
+            android:layout_below="@+id/btnSignUp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_centerHorizontal="true"
@@ -118,7 +118,7 @@
             android:layout_below="@+id/tv_othermethod">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnGoogle"
+                android:id="@+id/btGoogle"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:background="@drawable/button_bg_green"
@@ -133,7 +133,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
-                android:id="@+id/btnFB"
+                android:id="@+id/btnFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:background="@drawable/login_button_bg"
@@ -146,7 +146,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/btnGoogle"
+                app:layout_constraintStart_toEndOf="@+id/btGoogle"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -162,7 +162,7 @@
             android:visibility="invisible">
 
             <ProgressBar
-                android:id="@+id/progressbar"
+                android:id="@+id/progressBar"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_centerInParent="true">

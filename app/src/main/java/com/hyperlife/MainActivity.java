@@ -23,7 +23,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container,HomeFragment.class,null);
+        fragmentTransaction.commit();
 
         BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
         btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
