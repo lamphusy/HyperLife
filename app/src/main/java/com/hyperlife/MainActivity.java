@@ -15,6 +15,8 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.hyperlife.fragment.UserProfileFragment;
+import com.hyperlife.fragment.WorkoutFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -50,16 +52,16 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.replace(R.id.fragment_container,HomeFragment.class,null);
             fragmentTransaction.commit();
         }
-        if(id == R.id.nav_gym){
+        if(id == R.id.nav_workout){
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,GymFragment.class,null);
+            fragmentTransaction.replace(R.id.fragment_container, WorkoutFragment.class,null);
             fragmentTransaction.commit();
         }
-        if(id == R.id.nav_archie){
+        if(id == R.id.nav_user){
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,UserFragment.class,null);
+            fragmentTransaction.replace(R.id.fragment_container, UserProfileFragment.class,null);
             fragmentTransaction.commit();
         }
         if(id == R.id.nav_meal){

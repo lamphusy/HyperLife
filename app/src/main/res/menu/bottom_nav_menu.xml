@@ -14,12 +14,12 @@
         android:title="" />
 
     <item
-        android:id="@+id/nav_gym"
+        android:id="@+id/nav_workout"
         android:icon="@drawable/gym_icon_selector"
         android:title="Exercies" />
 
     <item
-        android:id="@+id/nav_archie"
+        android:id="@+id/nav_user"
         android:icon="@drawable/medal_icon_selector"
         android:title="Profile" />
 </menu>
