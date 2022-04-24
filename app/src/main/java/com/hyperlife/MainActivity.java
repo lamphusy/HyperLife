@@ -20,7 +20,7 @@ import com.hyperlife.fragment.WorkoutFragment;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    public BottomNavigationView btmNav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,17 +35,31 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_container,HomeFragment.class,null);
         fragmentTransaction.commit();
 
-        BottomNavigationView btmNav = findViewById(R.id.bottom_nav);
+
+        btmNav = findViewById(R.id.bottom_nav);
+        btmNav.setBackground(null);
+        btmNav.setItemIconTintList(null);
         btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                handleChangeFragment(item.getItemId());
-                return true;
-            }
-    });
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    handleChangeFragment(item.getItemId());
+                    return true;
+                }
+            });
+
     }
 
-    private void handleChangeFragment(int id) {
+//    public void handleBtmNavClick(int id) {
+//            btmNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//                @Override
+//                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                    handleChangeFragment(id);
+//                    return true;
+//                }
+//            });
+//    }
+
+    public void handleChangeFragment(int id) {
         if(id == R.id.nav_home){
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
