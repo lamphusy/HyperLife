@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -56,8 +57,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private static final String ARG_PARAM2 = "param2";
     private ProgressBar progressBarStep;
     SensorManager sensorManager;
-    Sensor mStepCounter, mStepDetector;
-    private boolean isCounterSensorPresent, isSetectorSensorPresent;
+    Sensor mStepCounter;
+
+
 
     private LinearLayout cardWater, cardStep, cardCalo,
             cardSleep, cardTraining, cardTime;
@@ -127,24 +129,14 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null){
-            mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-            sensorManager.registerListener(HomeFragment.this,mStepCounter,SensorManager.SENSOR_DELAY_FASTEST);
-            isCounterSensorPresent = true;
-        }else{
-            isCounterSensorPresent = false;
-        }
 
         if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null){
             mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-            sensorManager.registerListener(HomeFragment.this,mStepDetector,SensorManager.SENSOR_DELAY_FASTEST);
-            isSetectorSensorPresent = true;
-        }else{
-            isSetectorSensorPresent = false;
+            sensorManager.registerListener(this,mStepCounter,SensorManager.SENSOR_DELAY_GAME);
         }
-
-
 
         //add control
         txtStepCount = (TextView) view.findViewById(R.id.home_step_count);
@@ -203,42 +195,38 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         backgroundThread.start();
 
         //update step step step chuyện quna trọng phải nói 3 lần
-        Thread StepThread = new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+
+
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        firestore = FirebaseFirestore.getInstance();
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void run() {
-                LocalDate today = LocalDate.now();
-                LocalDate monday = today.with(previousOrSame(MONDAY));
-
-                firestore = FirebaseFirestore.getInstance();
-                docRef = firestore.collection("daily").
-                        document("week-of-" + monday.toString()).
-                        collection(today.toString()).
-                        document(theTempEmail);
-
-                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                String temp = task.getResult().getString("steps");
-                                if (temp != null) {
-                                    if (!"empty".equals(temp)) {
-                                        txtStepCount.setText(String.valueOf(temp));
-                                        numStepsHomeFrag = Integer.parseInt(temp);
-                                    }
-                                }
-                            } else {
-                                Log.d("LOGGER", "No such document");
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult() != null) {
+                        String temp = task.getResult().getString("steps");
+                        if (temp != null) {
+                            if (!"empty".equals(temp)) {
+                                txtStepCount.setText(String.valueOf(temp));
+                                numStepsHomeFrag = Integer.parseInt(temp);
                             }
-                        } else {
-                            Log.d("LOGGER", "get failed with ", task.getException());
                         }
+                    } else {
+                        Log.d("LOGGER", "No such document");
                     }
-                });
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
+                }
             }
         });
-        StepThread.start();
+
 
         cardWater.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,10 +240,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(),StepCountActivity.class);
-//                intent.putExtra("userEmail",userEmail);
-//                intent.putExtra("step_goal",step_goal);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(),Step.class);
+                intent.putExtra("userEmail",theTempEmail);
+                intent.putExtra("step_goal",step_goal);
+                startActivity(intent);
             }
         });
 
@@ -614,48 +602,85 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        if (!statusOfProgressBar.getText().equals("steps")) {
-            numStepsHomeFrag += (int)sensorEvent.values[0];
-            txtStepCount.setText(TEXT_NUM_STEPS + numStepsHomeFrag);
-            String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
-            progressBar.setMax(Integer.parseInt(tempStepGoal));
-            ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
-                    numStepsHomeFrag - 1,
-                    numStepsHomeFrag);
-            anim.setDuration(100);
-            progressBar.startAnimation(anim);
+//        if (!statusOfProgressBar.getText().equals("steps")) {
+//            numStepsHomeFrag += (int)sensorEvent.values[0];
+//            txtStepCount.setText(TEXT_NUM_STEPS + numStepsHomeFrag);
+//            String tempStepGoal = statusOfProgressBar.getText().toString().substring(1);
+//            progressBar.setMax(Integer.parseInt(tempStepGoal));
+//            ProgressBarAnimation anim = new ProgressBarAnimation(progressBar,
+//                    numStepsHomeFrag - 1,
+//                    numStepsHomeFrag);
+//            anim.setDuration(100);
+//            progressBar.startAnimation(anim);
+//
+//            Runnable stepCountRunnable = new Runnable() {
+//                @RequiresApi(api = Build.VERSION_CODES.O)
+//                @Override
+//                public void run() {
+//                    LocalDate today = LocalDate.now();
+//                    LocalDate monday = today.with(previousOrSame(MONDAY));
+//                    if (userEmail == null) {
+//                        docRef = firestore.collection("users").document(theTempEmail);
+//                    } else {
+//                        docRef = firestore.collection("users").document(userEmail);
+//                    }
+//                    docRef = firestore.collection("daily").
+//
+//                            document("week-of-" + monday.toString()).
+//
+//                            collection(today.toString()).
+//
+//                            document(theTempEmail);
+//                    docRef.update("steps", String.valueOf(numStepsHomeFrag));
+//
+//                }
+//            };
+//            Thread backgroundThread = new Thread(stepCountRunnable);
+//            backgroundThread.start();
+//        }
 
-            Runnable stepCountRunnable = new Runnable() {
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void run() {
-                    LocalDate today = LocalDate.now();
-                    LocalDate monday = today.with(previousOrSame(MONDAY));
-                    if (userEmail == null) {
-                        docRef = firestore.collection("users").document(theTempEmail);
+            numStepsHomeFrag += (int) sensorEvent.values[0];
+            LocalDate today = LocalDate.now();
+            LocalDate monday = today.with(previousOrSame(MONDAY));
+
+            firestore = FirebaseFirestore.getInstance();
+            docRef = firestore.collection("daily").
+                    document("week-of-" + monday.toString()).
+                    collection(today.toString()).
+                    document(theTempEmail);
+
+            docRef.update("steps",numStepsHomeFrag+"");
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult() != null) {
+                        String temp = task.getResult().getString("steps");
+                        if (temp != null) {
+                            if (!"empty".equals(temp)) {
+                                txtStepCount.setText(String.valueOf(temp));
+                                numStepsHomeFrag = Integer.parseInt(temp);
+                            }
+                        }
                     } else {
-                        docRef = firestore.collection("users").document(userEmail);
+                        Log.d("LOGGER", "No such document");
                     }
-                    docRef = firestore.collection("daily").
-
-                            document("week-of-" + monday.toString()).
-
-                            collection(today.toString()).
-
-                            document(theTempEmail);
-                    docRef.update("steps", String.valueOf(numStepsHomeFrag));
-
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
                 }
-            };
-            Thread backgroundThread = new Thread(stepCountRunnable);
-            backgroundThread.start();
-        }
+            }
+        });
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+
 }
