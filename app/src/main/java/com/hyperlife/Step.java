@@ -165,7 +165,7 @@ public class Step extends AppCompatActivity {
             @Override
             public void run() {
                 if("empty".equals(step_goal)){
-                    txtCountStep.setText("zzzzz");
+                    txtCountStep.setText("0");
                     txtKcalStep.setText("0");
                     txtLongStep.setText("0");
                 }else{

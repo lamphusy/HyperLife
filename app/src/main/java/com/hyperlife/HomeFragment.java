@@ -275,9 +275,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardSleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(),SleepTimeActivity.class);
-//                intent.putExtra("sleepTime",sleepTime);
-//                startActivity(sleepTime);
+                Intent intent = new Intent(getActivity(),SleepTime.class);
+                intent.putExtra("sleepTime",sleepTime);
+                intent.putExtra("userEmail",theTempEmail);
+                startActivity(intent);
             }
         });
 
@@ -359,6 +360,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
                                             if(time.equals("empty")){
                                                 Value.put("sleep_time","empty");
+                                                Value.put("wake_time","empty");
                                             }else{
                                                 Value.put("sleep_time","0");
                                             }
@@ -378,7 +380,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                                             if (step.equals("empty")) {
                                                 Value.put("steps", "empty");
                                             } else {
-                                                Value.put("steps", step);
+                                                Value.put("steps", "0");
                                             }
 
                                             Value.put("time_on_screen", "0");
@@ -486,9 +488,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private void SetupSleepCard(String userEmail) {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
-        docRef = firestore.collection("daily").
-                document("week-of-" + monday.toString()).
-                collection(today.toString()).
+        docRef = firestore.collection("users").
                 document(userEmail);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -498,10 +498,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
-                        String temp = document.getString("sleep_time");
+                        String temp = document.getString("sleep_goal");
                         if (!"empty".equals(temp)) {
-                            String[] splitString = temp.split(":");
-                            txtSleepTime.setText(splitString[0] + "h");
+                             String[] splitString = temp.split(" ");
+                            txtSleepTime.setText(splitString[0]);
                             sleepTime = temp;
                             cardSleep.setClickable(true);
                         }
@@ -571,7 +571,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                         }else{
                             setupStepGoal.setVisibility(View.GONE);
                             statusOfProgressBar.setText("/" + step_goal);
-                            txtStepCount.setText(TEXT_NUM_STEPS+ numStepsHomeFrag);
+                            txtStepCount.setText(""+numStepsHomeFrag);
 
                             String tempStepGoal = statusOfProgressBar.getText().
                                     toString().substring(1);
