@@ -13,7 +13,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="ShapeAppearance.HooCare.MediumComponent.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">700dp</item>
+    </style>
+    <style name="BottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="ShapeAppearance.HyperLife.MediumComponent.Rounded" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerSizeTopLeft">20dp</item>
         <item name="cornerSizeTopRight">45dp</item>
         <item name="cornerSizeBottomLeft">20dp</item>

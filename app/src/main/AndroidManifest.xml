@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.hyperlife">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
 
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +23,7 @@
         <activity
             android:name=".Step"
             android:exported="false" />
+        <activity android:name=".WorkoutHistoryActivity"/>
         <activity android:name=".OnBoardActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".SplashScreenActivity2" />
@@ -30,6 +38,9 @@
         </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
+        <activity android:name=".WorkoutDataActivity" />
+
+
     </application>
 
 </manifest>
