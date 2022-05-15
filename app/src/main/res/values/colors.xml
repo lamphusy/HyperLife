@@ -13,4 +13,5 @@
     <color name="transparent">#00000000</color>
     <color name="googlecolor">#EF3737</color>
     <color name="facebookcolor">#3950D3</color>
+    <color name="primary">#0096C7</color>
 </resources>

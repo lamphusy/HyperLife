@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lime_200"
+    android:background="@color/primary"
     tools:context=".SplashScreenActivity2">
 
     <ImageView
         android:id="@+id/imageViewSplash"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="196dp"
+        android:layout_marginTop="192dp"
         android:paddingLeft="20dp"
         android:src="@drawable/hoocarelogo"
         android:transitionName="logo_image"

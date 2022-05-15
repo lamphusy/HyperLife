@@ -5,13 +5,13 @@
     android:id="@+id/home_frag_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_500"
+    android:background="@color/primary"
     tools:context=".HomeFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/purple_500"
+        android:background="@color/primary"
         android:orientation="vertical"
         tools:ignore="ScrollViewSize">
 
@@ -108,7 +108,7 @@
                         android:id="@+id/step_count_cardview_linear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/purple_500"
+                        android:background="@color/primary"
                         android:clickable="true"
                         android:focusable="true"
                         android:orientation="vertical"
@@ -213,7 +213,7 @@
                                     android:paddingRight="10dp"
                                     android:paddingBottom="5dp"
                                     android:text="set up goal"
-                                    android:textColor="@color/lime_100"
+                                    android:textColor="@color/primary"
                                     android:textSize="15sp"
                                     android:textStyle="bold"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -505,7 +505,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/cardview_background_gradient"
-                                    android:backgroundTint="@color/lime_200"
+                                    android:backgroundTint="@color/primary"
                                     android:gravity="center"
                                     android:paddingLeft="10dp"
                                     android:paddingTop="5dp"
