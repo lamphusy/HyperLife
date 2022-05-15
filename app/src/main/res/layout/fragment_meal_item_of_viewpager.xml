@@ -16,7 +16,7 @@
         android:paddingBottom="20dp"
         android:backgroundTint="@color/lime_200"
         app:cardElevation="8dp"
-        app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+        app:shapeAppearance="@style/ShapeAppearance.HyperLife.MediumComponent.Rounded">
 
 
     </com.google.android.material.card.MaterialCardView>
