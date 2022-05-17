@@ -36,7 +36,7 @@
                 android:layout_marginEnd="30dp"
                 android:gravity="end"
                 android:text="@string/body_measurement_Detail"
-                android:textColor="@color/lime_200"
+                android:textColor="@color/primary"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/exercise_plan_background_gymfrag"
+            android:background="@drawable/cardview_background_gradient"
             app:layout_constraintEnd_toEndOf="@id/classic_workout_detail"
             app:layout_constraintStart_toStartOf="@id/classic_workout_detail"
             app:layout_constraintTop_toBottomOf="@id/exercises_plan_title_linear">
@@ -139,7 +139,7 @@
                 android:backgroundTint="@color/white"
                 android:contentDescription="@string/view_button_contentDes"
                 android:src="@drawable/play_arrow_fab_gymfrag"
-                android:tint="@color/lime_200"
+                android:tint="@color/primary"
                 app:fabCustomSize="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

@@ -16,7 +16,7 @@
             android:layout_gravity="center"
             android:padding="10dp"
             android:text="Sign Up"
-            android:textColor="@color/lime_200"
+            android:textColor="@color/primary"
             android:textSize="30dp" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -153,7 +153,7 @@
             android:layout_below="@id/date_picker"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="5dp"
-            android:background="@drawable/button_bg_green"
+            android:backgroundTint="@color/primary"
             android:text="JOIN US"
             android:textColor="#fff" />
 
