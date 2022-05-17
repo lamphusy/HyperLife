@@ -266,9 +266,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(getActivity(), UsageStatisticActivity.class);
-//                intent.putExtra("userEmail",userEmail);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), UsageStatistics.class);
+                intent.putExtra("userEmail",userEmail);
+                startActivity(intent);
             }
         });
 
