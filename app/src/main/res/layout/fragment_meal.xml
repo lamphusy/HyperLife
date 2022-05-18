@@ -37,7 +37,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginBottom="10dp"
             app:cardElevation="8dp"
-            app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+            app:shapeAppearance="@style/ShapeAppearance.HyperLife.MediumComponent.Rounded">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,7 +181,8 @@
                         android:drawableRight="@drawable/ic_baseline_keyboard_arrow_down_24"
                         android:text=" MEAL CONSUMED TODAY"
                         app:layout_constraintBottom_toTopOf="@+id/inputmeallayout"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:backgroundTint="@color/primary"/>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/inputmeallayout"
@@ -252,6 +253,7 @@
                 android:textSize="19sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -260,7 +262,7 @@
             android:layout_marginRight="30dp"
             android:layout_marginBottom="10dp"
             app:cardElevation="8dp"
-            app:shapeAppearance="@style/ShapeAppearance.HooCare.MediumComponent.Rounded">
+            app:shapeAppearance="@style/ShapeAppearance.HyperLife.MediumComponent.Rounded">
 
             <RelativeLayout
                 android:id="@+id/bmi_relative"
@@ -290,7 +292,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/_85_05"
-                        android:textColor="@color/lime_200"
+                        android:textColor="@color/primary"
                         android:textSize="45sp" />
 
                     <TextView
@@ -299,7 +301,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:text="@string/kg"
-                        android:textColor="@color/lime_200"
+                        android:textColor="@color/primary"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -401,7 +403,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/cardview_background_gradient"
-                    android:backgroundTint="@color/lime_200"
+                    android:backgroundTint="@color/primary"
                     android:gravity="center"
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
@@ -418,6 +420,9 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="120dp" />
     </LinearLayout>
 
 </ScrollView>

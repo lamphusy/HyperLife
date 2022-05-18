@@ -10,8 +10,8 @@
         android:top="-120dp">
         <shape android:shape="oval">
             <gradient
-                android:startColor="#35AA7B"
-                android:endColor= "#35AA7B"/>
+                android:startColor="@color/primary"
+                android:endColor= "@color/primary"/>
         </shape>
     </item>
 </layer-list>
