@@ -1,14 +1,21 @@
 package com.hyperlife;
 
-import static android.content.Context.MODE_PRIVATE;
-import static java.time.DayOfWeek.MONDAY;
-import static java.time.temporal.TemporalAdjusters.previousOrSame;
-
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.transition.AutoTransition;
+import android.transition.TransitionManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -18,32 +25,30 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.transition.AutoTransition;
-import android.transition.TransitionManager;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.hyperlife.adapter.MealViewPagerAdapter;
-import com.hyperlife.model.MealPlanData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.hyperlife.adapter.MealViewPagerAdapter;
+import com.hyperlife.MainActivity;
+import com.hyperlife.model.MealPlanData;
+import com.hyperlife.R;
+
+import static android.content.Context.MODE_PRIVATE;
+import static java.lang.Integer.valueOf;
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+
 public class MealFragment extends Fragment {
 
-    //recycler view variables
+    //initialize variable for recyclerview
     private RecyclerView recyclerView;
     private ArrayList<String> titles, detailOfMeals, kcalOfMeal;
     private ArrayList<Integer> icons;
@@ -59,7 +64,7 @@ public class MealFragment extends Fragment {
     private ConstraintLayout setUPContraint;
     private RelativeLayout bmiRelative;
 
-    // Meal Input
+    ///MealInputVariables
     private EditText mCarbsBreakfast, mProteinBreakfast, mFatBreakfast,
             mCarbsLunch, mProteinLunch, mFatLunch,
             mCarbsSnack, mProteinSnack, mFatSnack,
@@ -72,8 +77,8 @@ public class MealFragment extends Fragment {
     private float eaten, burned;
     private float tempBmiStatus;
 
-
     public MealFragment() {
+        // Required empty public constructor
     }
 
     public void callParentMethod() {
@@ -91,7 +96,9 @@ public class MealFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View rootview = inflater.inflate(R.layout.fragment_meal, container, false);
+
         weightTextView = rootview.findViewById(R.id.weight_detail);
         heightTextView = rootview.findViewById(R.id.body_height_data);
         setUPContraint = rootview.findViewById(R.id.setup_bmi_constraint);
@@ -117,9 +124,10 @@ public class MealFragment extends Fragment {
         mFatLunch = rootview.findViewById(R.id.et_fat_lunch);
         mFatSnack = rootview.findViewById(R.id.et_fat_snack);
         mFatDinner = rootview.findViewById(R.id.et_fat_dinner);
+        mConsumed = rootview.findViewById(R.id.btConsume);
+        mOpenMealInput = rootview.findViewById(R.id.btOpenMealInput);
         ///
         bmiTitle = rootview.findViewById(R.id.BMI_title);
-
 
         mOpenMealInput.setOnClickListener(new View.OnClickListener() {
 
@@ -263,12 +271,12 @@ public class MealFragment extends Fragment {
         backgroundThread = new Thread(setUpBMIRunnable);
         backgroundThread.start();
 
-//        setUpBMIButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ((MainActivity) getActivity()).fillForm(Gravity.CENTER, 1);
-//            }
-//        });
+        setUpBMIButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).fillForm(Gravity.CENTER, 1);
+            }
+        });
         mConsumed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -373,7 +381,8 @@ public class MealFragment extends Fragment {
             }
         });
 
-        //recylcer view
+
+        //set up test data for recyclerview
         titles = new ArrayList<String>();
         detailOfMeals = new ArrayList<String>();
         kcalOfMeal = new ArrayList<String>();
@@ -398,13 +407,14 @@ public class MealFragment extends Fragment {
 
         mealPlanData = new MealPlanData(titles, detailOfMeals, icons, backgroundView);
 
-        //set adapter
+        /**setting up the recyclerview*/
         recyclerView = rootview.findViewById(R.id.meal_plan_recyclerview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL, false));
         adapter = new MealViewPagerAdapter(mealPlanData);
         recyclerView.setAdapter(adapter);
+
 
         return rootview;
     }
