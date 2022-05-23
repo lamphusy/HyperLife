@@ -46,7 +46,7 @@
                         android:padding="8dp"
                         android:text="Workout History"
                         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                        android:textColor="@color/lime_200"
+                        android:textColor="@color/primary"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
