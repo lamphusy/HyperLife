@@ -14,7 +14,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:paddingBottom="20dp"
-        android:backgroundTint="@color/lime_200"
+        android:backgroundTint="@color/primary"
         app:cardElevation="8dp"
         app:shapeAppearance="@style/ShapeAppearance.HyperLife.MediumComponent.Rounded">
 

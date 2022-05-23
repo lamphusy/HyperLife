@@ -5,19 +5,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_white_corner_16"
     android:layout_margin="16dp">
+
     <TextView
         android:id="@+id/edit_gender_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/gender"
-        android:textSize="18sp"
+        android:background="@drawable/top_color_white_corner_16"
+        android:backgroundTint="@color/primary"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/lime_200"
         android:padding="10dp"
+        android:text="@string/gender"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:background="@drawable/top_color_white_corner_16"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <LinearLayout

@@ -50,7 +50,7 @@
                         android:padding="8dp"
                         android:text="@string/time_onscreen"
                         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
-                        android:textColor="@color/lime_200"
+                        android:textColor="@color/primary"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -115,7 +115,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="16h 40m"
-                android:textColor="@color/lime_100"
+                android:textColor="@color/primary"
                 android:textSize="35sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toRightOf="@id/time_icon_time_usage"
