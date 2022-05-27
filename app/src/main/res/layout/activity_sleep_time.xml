@@ -15,6 +15,8 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/sleep_time_app_bar"
             android:layout_width="match_parent"
+            android:backgroundTint="@color/primary"
+
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -51,7 +53,7 @@
                             android:padding="8dp"
                             android:text="@string/sleep_time"
                             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
-                            android:textColor="@color/lime_200"
+                            android:textColor="@color/teal_700"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -108,14 +110,14 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/date_time_statistic"
+                        android:id="@+id/date_time_sleep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:gravity="center"
                         android:text="Today, 9 June"
                         android:textColor="@color/black"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         app:layout_constraintTop_toTopOf="parent" />
                 </LinearLayout>
@@ -150,7 +152,7 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/datetime_linear_sleep_time" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/choose_button_wake_up_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -158,6 +160,8 @@
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:padding="10dp"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="@color/white"
                     android:text="What time do you want to wake up?"
                     android:textSize="10sp"
                     android:textStyle="bold"
@@ -207,10 +211,11 @@
                         android:id="@+id/time_to_wake"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@color/lime_200"
+                        android:background="@drawable/cardview_background_gradient"
+                        android:backgroundTint="@color/primary_opacity_0.5"
                         android:padding="10dp"
                         android:text="@string/loading"
-                        android:textColor="@color/lime_100"
+                        android:textColor="@color/teal_700"
                         android:textSize="20sp" />
                 </LinearLayout>
 
@@ -243,7 +248,7 @@
                         android:backgroundTint="@color/lime_200"
                         android:padding="10dp"
                         android:text="@string/loading"
-                        android:textColor="@color/lime_100"
+                        android:textColor="@color/teal_700"
                         android:textSize="20sp" />
                 </LinearLayout>
 

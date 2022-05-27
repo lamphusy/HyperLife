@@ -10,7 +10,7 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:text="alarm wake up"
-        android:backgroundTint="@color/lime_100"/>
+        android:backgroundTint="@color/teal_200"/>
     Button
         android:id="@+id/btn_alarm_go_bed"
         android:layout_width="280dp"

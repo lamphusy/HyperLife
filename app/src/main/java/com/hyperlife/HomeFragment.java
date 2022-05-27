@@ -231,9 +231,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(getActivity(),WaterActivity.class);
-//                intent.putExtra("userEmail",userEmail);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(),WaterActivity.class);
+                intent.putExtra("userEmail",theTempEmail);
+                startActivity(intent);
             }
         });
 
@@ -386,7 +386,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                                             Value.put("time_on_screen", "0");
                                             Value.put("cal_step","0");
                                             Value.put("km_step","0");
-
+                                            Value.put("reminder_water","false");
                                             Value.put("diet", "0");
 
                                             Value.put("num_of_exercise", "0");

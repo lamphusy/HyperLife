@@ -6,6 +6,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.AlarmManager;
@@ -51,8 +52,8 @@ import java.util.Calendar;
 public class SleepTime extends AppCompatActivity {
 
     FirebaseFirestore firestore;
-    TextView txtLoading, txtAskTime, txtTimeWake, txtTimeSleep;
-    Button btnSetWakeupTime;
+    TextView txtLoading, txtAskTime, txtTimeWake, txtTimeSleep, txtDateTimeSleep;
+    AppCompatButton btnSetWakeupTime;
     LinearLayout sleepTimeLinear, sleepTimeLinear2;
     ImageView imgBack, imgMoreOption;
     ViewPager2 viewPagerSleep;
@@ -88,14 +89,16 @@ public class SleepTime extends AppCompatActivity {
         txtAskTime = (TextView) findViewById(R.id.text_view_time_wake);
         txtTimeWake = (TextView) findViewById(R.id.time_to_wake);
         txtTimeSleep = (TextView)findViewById(R.id.time_to_sleep);
-        btnSetWakeupTime = (Button) findViewById(R.id.choose_button_wake_up_time);
+        btnSetWakeupTime = (AppCompatButton) findViewById(R.id.choose_button_wake_up_time);
         sleepTimeLinear = (LinearLayout)findViewById(R.id.sleep_time_linear);
         sleepTimeLinear2 = (LinearLayout) findViewById(R.id.sleep_time_linear_2);
         imgBack = (ImageView) findViewById(R.id.button_back_sleep_time);
         viewPagerSleep = (ViewPager2)findViewById(R.id.suggest_sleep_time);
         imgMoreOption = (ImageView) findViewById(R.id.more_menu_sleep_time);
+        txtDateTimeSleep = (TextView)findViewById(R.id.date_time_sleep);
 
 
+        backGroundThread();
         updateTimeWakeSleep();
         checkSetTimeWakeAlready();
 
@@ -105,6 +108,17 @@ public class SleepTime extends AppCompatActivity {
 
 
 
+    }
+    private void backGroundThread() {
+        Thread thread = new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                LocalDate getToday = LocalDate.now();
+                txtDateTimeSleep.setText(getToday.getDayOfWeek() +", "+ getToday.getMonth()+" "+getToday.getDayOfMonth());
+            }
+        });
+        thread.start();
     }
 
     private void updateTimeWakeSleep() {
@@ -212,12 +226,11 @@ public class SleepTime extends AppCompatActivity {
             CharSequence name = "Hyperlife";
             String description = "Remind sleep";
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("notify",
+            NotificationChannel channel = new NotificationChannel("notify_sleep",
                     name,importance);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-
         }
 
     }
@@ -251,7 +264,7 @@ public class SleepTime extends AppCompatActivity {
             timeAtButtonClick += 1000* 60 * 60 * 24;
         }
 
-        alarmManager.set(AlarmManager.RTC_WAKEUP,timeAtButtonClick,
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,timeAtButtonClick, AlarmManager.INTERVAL_DAY,
                 pendingIntent);
 
     }

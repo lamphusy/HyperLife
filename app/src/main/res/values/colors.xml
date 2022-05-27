@@ -14,4 +14,7 @@
     <color name="googlecolor">#EF3737</color>
     <color name="facebookcolor">#3950D3</color>
     <color name="primary">#0096C7</color>
+    <color name="primary_opacity_0.5">#6B0096C7</color>
+    <color name="primary_dark">#006D91</color>
+
 </resources>
