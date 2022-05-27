@@ -14,11 +14,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/primary"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             app:contentInsetStart="0dp">
 
             <RelativeLayout
@@ -50,7 +52,9 @@
                         android:padding="8dp"
                         android:text="@string/time_onscreen"
                         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
-                        android:textColor="@color/primary"
+
+                        android:textColor="@color/teal_700"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -213,15 +217,17 @@
         </LinearLayout>
 
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/open_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="10dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary"
             android:text="Open setting"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
 
