@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="192dp"
         android:paddingLeft="20dp"
-        android:src="@drawable/hoocarelogo"
+        android:src="@drawable/hyperlifelogo"
         android:transitionName="logo_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

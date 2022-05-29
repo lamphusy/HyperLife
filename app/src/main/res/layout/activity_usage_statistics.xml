@@ -52,7 +52,9 @@
                         android:padding="8dp"
                         android:text="@string/time_onscreen"
                         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+
                         android:textColor="@color/teal_700"
+
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

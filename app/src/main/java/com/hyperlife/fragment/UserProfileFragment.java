@@ -27,15 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.hyperlife.MainActivity;
 import com.hyperlife.R;
 import com.hyperlife.SignInActivity;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UserProfileFragment extends Fragment {
 
-    private TextView mName, mId, mEmail, mDateOfBirth,mGender;
+    private TextView mName, mId, mEmail, mDateOfBirth, mGender;
     ImageView mUserImage;
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
@@ -55,7 +49,7 @@ public class UserProfileFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootview = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
         mAuth = FirebaseAuth.getInstance();
@@ -66,7 +60,6 @@ public class UserProfileFragment extends Fragment {
         logout = rootview.findViewById(R.id.linearlogout);
         mDateOfBirth = rootview.findViewById(R.id.id_date_of_birth);
         mGender = rootview.findViewById(R.id.id_gender);
-
 
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -89,43 +82,64 @@ public class UserProfileFragment extends Fragment {
         mEmail.setText(theTempEmail);
         firestore = FirebaseFirestore.getInstance();
 
-//        Runnable getUserInfoFromFirebase = new Runnable() {
-//            @Override
-//            public void run() {
-//                docRef = firestore.collection("users").document(theTempEmail);
-//                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            DocumentSnapshot document = task.getResult();
-//                            if (document != null) {
-//                                String temp = document.getString("name");
-//                                String tempBirth = document.getString("date_of_birth");
-//                                String tempGender = document.getString("gender");
-//                                mName.setText(temp);
-//
-//                                assert tempBirth != null;
-//                                if(!tempBirth.equals("empty")){
-//                                    mDateOfBirth.setText(tempBirth);
-//                                } else {
-//                                    mDateOfBirth.setText("Choose date of birth");
-//                                }
-//
-//                                assert tempGender != null;
-//                                if(!tempGender.equals("empty")){
-//                                    mGender.setText(tempGender);
-//                                }else {
-//                                    mGender.setText("Choose Gender");
-//                                }
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//        };
-//
-//        Thread backgroundThread = new Thread(getUserInfoFromFirebase);
-//        backgroundThread.start();
+        Runnable getUserInfoFromFirebase = new Runnable() {
+            @Override
+            public void run() {
+                docRef = firestore.collection("users").document(theTempEmail);
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document != null) {
+                                String temp = document.getString("name");
+                                String tempBirth = document.getString("date_of_birth");
+                                String tempGender = document.getString("gender");
+                                mName.setText(temp);
+
+                                assert tempBirth != null;
+                                if (!tempBirth.equals("empty")) {
+                                    mDateOfBirth.setText(tempBirth);
+                                } else {
+                                    mDateOfBirth.setText("Choose date of birth");
+                                }
+
+                                assert tempGender != null;
+                                if (!tempGender.equals("empty")) {
+                                    mGender.setText(tempGender);
+                                } else {
+                                    mGender.setText("Choose Gender");
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        mName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openEditNameDialog(Gravity.CENTER,3) ;
+            }
+        });
+
+        mDateOfBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openEditBirthdayDialog(Gravity.CENTER,3);
+            }
+        });
+
+        mGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).openEditGenderDialog(Gravity.CENTER,3);
+            }
+        });
+        Thread backgroundThread = new Thread(getUserInfoFromFirebase);
+        backgroundThread.start();
         return rootview;
     }
+
+
 }
