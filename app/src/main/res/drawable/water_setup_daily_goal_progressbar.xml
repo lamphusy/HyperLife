@@ -6,7 +6,7 @@
             android:shape="ring"
             android:thicknessRatio="10"
             android:useLevel="false">
-            <solid android:color="#c6ecd9"/>
+            <solid android:color="@color/primary_opacity_0.5"/>
         </shape>
     </item>
 
@@ -17,7 +17,7 @@
                 android:shape="ring"
                 android:thickness="20dp"
                 android:useLevel="true">
-                <solid android:color="@color/lime_200"/>
+                <solid android:color="@color/primary"/>
             </shape>
         </rotate>
     </item>
@@ -28,7 +28,7 @@
             android:shape="ring"
             android:thickness="10dp"
             android:useLevel="false">
-            <solid android:color="#58C892" />
+            <solid android:color="@color/primary_dark" />
         </shape>
     </item>
     <item>
@@ -39,7 +39,7 @@
                     android:shape="ring"
                     android:thickness="10dp"
                     android:useLevel="false">
-                    <solid android:color="@color/lime_200" />
+                    <solid android:color="@color/primary" />
                 </shape>
             </inset>
         </rotate>
