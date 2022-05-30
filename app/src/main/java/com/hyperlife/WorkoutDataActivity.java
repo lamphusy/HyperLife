@@ -36,8 +36,9 @@ import com.hyperlife.model.NonScrollListView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import com.google.android.youtube.player.YouTubeBaseActivity;
 
-public class WorkoutDataActivity extends AppCompatActivity {
+public class WorkoutDataActivity extends YouTubeBaseActivity  {
     private ImageView workoutImage, backButton, plusButton, minusButton;
     private TextView workoutTitle, workoutTime, exerciseTitle, exerciseDurationValue,
             exerciseDurationText, animTitle, videoTitle, focusArea, workoutBigTitle,
@@ -311,7 +312,7 @@ public class WorkoutDataActivity extends AppCompatActivity {
         startWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WorkoutDataActivity.this, WorkoutDataActivity.class);
+                Intent intent = new Intent(WorkoutDataActivity.this, WorkoutActivity.class);
                 intent.putExtra("workoutTitle", tempString);
                 intent.putExtra("workoutImage",listExerciseIntent.getIntExtra("workoutImage", 0));
                 intent.putExtra("workoutTime",listExerciseIntent.getStringExtra("workoutTime"));

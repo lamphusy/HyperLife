@@ -24,19 +24,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.hyperlife.ChangePassWordActivity;
 import com.hyperlife.MainActivity;
 import com.hyperlife.R;
 import com.hyperlife.SignInActivity;
+
+import java.util.Objects;
+
 public class UserProfileFragment extends Fragment {
 
-    private TextView mName, mId, mEmail, mDateOfBirth, mGender;
+    private TextView mName, mId, mEmail, mDateOfBirth, mGender, txtChangePassword;
     ImageView mUserImage;
     private static final String tempEmail = "tempEmail";
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private LinearLayout logout;
     private FirebaseAuth mAuth;
-
 
     public UserProfileFragment() {
 
@@ -60,7 +63,7 @@ public class UserProfileFragment extends Fragment {
         logout = rootview.findViewById(R.id.linearlogout);
         mDateOfBirth = rootview.findViewById(R.id.id_date_of_birth);
         mGender = rootview.findViewById(R.id.id_gender);
-
+        txtChangePassword = rootview.findViewById(R.id.txtChangePassword);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +137,13 @@ public class UserProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ((MainActivity) getActivity()).openEditGenderDialog(Gravity.CENTER,3);
+            }
+        });
+        txtChangePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChangePassWordActivity.class);
+                startActivity(intent);
             }
         });
         Thread backgroundThread = new Thread(getUserInfoFromFirebase);
