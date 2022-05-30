@@ -276,7 +276,7 @@ public class SleepTime extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(!task.getResult().get("wake_time").equals("empty")){
+                if(!task.getResult().getString("wake_time").equals("empty")){
                     timeWakeUp = task.getResult().getString("wake_time");
                     adapter = new SleepTimePagerAdapter(userEmail, task.getResult().getString("wake_time"));
                     viewPagerSleep.setAdapter(adapter);
@@ -334,6 +334,9 @@ public class SleepTime extends AppCompatActivity {
                 double update_time = 0;
                 String sleep_goal = task.getResult().getString("sleep_goal");
                 String []sleep_goal_2 = sleep_goal.split(" ");
+                if(sleep_goal_2[0].equals("empty")){
+                    sleep_goal_2[0] = "8";
+                }
                 sleep_goal = sleep_goal_2[0];
                 double sleep_goal_double = Double.parseDouble(sleep_goal);
                 if(time_wake_real_number < sleep_goal_double){
@@ -383,7 +386,7 @@ public class SleepTime extends AppCompatActivity {
                                 document("week-of-"+ monday.toString()).
                                 collection(today.toString()).document(userEmail);
 
-                        updateSleepTime(lastSelectedHourFormat+":"+lastSelectedMinuteFormat);
+
 
                         docRef.update("wake_time",lastSelectedHourFormat+":"+lastSelectedMinuteFormat)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -395,6 +398,8 @@ public class SleepTime extends AppCompatActivity {
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
+
+                                                updateSleepTime(lastSelectedHourFormat+":"+lastSelectedMinuteFormat);
                                                 checkSetTimeWakeAlready();
                                             }
                                         });
