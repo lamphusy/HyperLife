@@ -16,7 +16,7 @@ import com.hyperlife.R;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"notify")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"notify_sleep")
                 .setSmallIcon(R.drawable.sleeping_in_bed)
                 .setContentTitle("It's time to go to sleep!")
                 .setContentText("Good night! I love you!")

@@ -31,6 +31,9 @@
             android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"
+
+            android:name=".WaterActivity"
+
             android:exported="false" />
         <activity
             android:name=".UsageStatistics"
@@ -58,7 +61,7 @@
         <activity android:name=".MainActivity" />
 
         <receiver android:name=".model.AlarmReceiver" />
-
+        <receiver android:name=".model.ReminderWaterReceiver" />
         <activity android:name=".WorkoutDataActivity" />
     </application>
 

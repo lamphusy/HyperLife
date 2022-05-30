@@ -1,5 +1,8 @@
 package com.hyperlife;
 
+import static java.time.DayOfWeek.MONDAY;
+import static java.time.temporal.TemporalAdjusters.previousOrSame;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
@@ -24,6 +27,8 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -39,13 +44,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hyperlife.fragment.UserProfileFragment;
 import com.hyperlife.fragment.WorkoutFragment;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 
@@ -394,6 +403,196 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return "Female";
         }
+    }
+
+    public void fillForm(int gravity, int fragmentPos) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_edit);
+        Window window = dialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if (Gravity.CENTER == gravity) {
+            dialog.setCancelable(true);
+        } else {
+            dialog.setCancelable(false);
+        }
+
+        AppCompatButton btncancel = dialog.findViewById(R.id.cancel_dialog);
+        EditText weightEditText = dialog.findViewById(R.id.edit_weight);
+        EditText heightEditText = dialog.findViewById(R.id.edit_height);
+        Button saveButton = dialog.findViewById(R.id.save_btn_dialog);
+
+        Runnable setUpBMIRunnable = new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                SetUpBMIDialogFirebase(weightEditText, heightEditText);
+            }
+        };
+
+        Thread backgroundBMIThread = new Thread(setUpBMIRunnable);
+        backgroundBMIThread.start();
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                String checkWeight = weightEditText.getText().toString();
+                String checkHeight = heightEditText.getText().toString();
+                if (checkHeight.trim().equals("") || checkWeight.trim().equals("")) {
+                    Toast.makeText(MainActivity.this, "Please fill out the form!", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(checkHeight) <= 0) {
+                    Toast.makeText(MainActivity.this, "Please fill in a normal Weight", Toast.LENGTH_SHORT).show();
+                } else if (Integer.parseInt(checkWeight) <= 0) {
+                    Toast.makeText(MainActivity.this, "Please fill in a normal Height", Toast.LENGTH_SHORT).show();
+                } else {
+                    SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
+
+                    firestore = FirebaseFirestore.getInstance();
+
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
+
+                    docRef = firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(today.toString()).
+                            document(theTempEmail);
+                    docRef.update("weight", String.valueOf(weightEditText.getText()));
+                    docRef.update("height", String.valueOf(heightEditText.getText()));
+
+                    docRef = firestore.collection("users").document(theTempEmail);
+                    docRef.update("weight", String.valueOf(weightEditText.getText()));
+                    docRef.update("height", String.valueOf(heightEditText.getText()));
+
+                    if (fragmentPos != 5) {
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtra("fragmentPosition", fragmentPos);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(0, 0);
+                    }
+
+                }
+            }
+        });
+
+        weightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveButton.setText("Update");
+            }
+        });
+
+        heightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveButton.setText("Update");
+            }
+        });
+
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpBMIDialogFirebase(EditText weightEditText, EditText heightEditText) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
+
+        docRef = firestore.collection("users").document(theTempEmail);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String tempWeight = document.getString("weight");
+                        String tempHeight = document.getString("height");
+
+                        assert tempWeight != null;
+                        if (!tempWeight.equals("empty")) {
+                            weightEditText.setText(tempWeight);
+                        }
+                        assert tempHeight != null;
+                        if (!tempHeight.equals("empty")) {
+                            heightEditText.setText(tempHeight);
+                        }
+
+                        if (tempHeight.equals("empty") && tempWeight.equals("empty")) {
+                            docRef = firestore.collection("daily").
+                                    document("week-of-" + monday.toString()).
+                                    collection(today.toString()).
+                                    document(theTempEmail);
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document != null) {
+                                            String weight = document.getString("weight");
+                                            String height = document.getString("height");
+                                            if (!"empty".equals(weight)) {
+                                                weightEditText.setText(weight);
+                                            }
+                                            if (!"empty".equals(height)) {
+                                                heightEditText.setText(height);
+                                            }
+
+                                        } else {
+                                            Log.d("LOGGER", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("LOGGER", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
+
+
     }
 
 }

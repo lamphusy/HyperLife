@@ -55,27 +55,7 @@ import static java.time.temporal.TemporalAdjusters.previousOrSame;
 
 public class UsageStatistics extends AppCompatActivity {
 
-//    private ArrayList<AppUsageInfo> smallInfoList;
-//    private String tempString, theTempEmail;
-//    private Button mOpenUsageSettingButton;
-//    private ListView listView;
-//    private ImageView backButton, moreButton;
-//    private LinearLayout eyeConditionBox, setUpTimeUsageLinear;
-//    private TextView totalTextView, dateTimeTextView, eyeConditionTextView, nextToFollowingWeek, backToPreviusWeek, weekLabel, noData;
-//    private MaterialCardView totalTimeUsageCardView;
-//    private static final String allowUsageAccess = "allowUsageAccess";
-//    private static final String tempEmail = "tempEmail";
-//    private FirebaseFirestore firestore;
-//    private DocumentReference docRef;
-//
-//    private LocalDate tempDate;
-//    private ArrayList<String> daylist;
-//    private String joinDate, beginDay, endDay;
-//    private String[] beginDaySplit, endDaySplit;
-//    private ArrayList<BarEntry> dataValue = new ArrayList<BarEntry>();
-//    private ViewPager2 verticalViewPager2;
-//    private BarChartAdapter adapter;
-//    private int i = 1;
+
     private LocalDate today,monday;
     ImageView img_option;
     LinearLayout linear_setup;
@@ -110,10 +90,23 @@ public class UsageStatistics extends AppCompatActivity {
         txtDateTime = findViewById(R.id.date_time_statistic);
 
 
-         today = LocalDate.now();
+        today = LocalDate.now();
         monday = today.with(previousOrSame(MONDAY));
 
+        backGroundThread();
         addEvents();
+    }
+
+    private void backGroundThread() {
+        Thread thread = new Thread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                LocalDate getToday = LocalDate.now();
+                txtDateTime.setText(getToday.getDayOfWeek() +", "+ getToday.getMonth()+" "+getToday.getDayOfMonth());
+            }
+        });
+        thread.start();
     }
 
     private void addEvents() {

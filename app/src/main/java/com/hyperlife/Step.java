@@ -155,8 +155,6 @@ public class Step extends AppCompatActivity {
         imgSettingStepGoal = findViewById(R.id.more_menu_stepcount);
         txtDateTimeStep = findViewById(R.id.date_time_step);
 
-        txtDateTimeStep.setText(today.toString());
-
         intent = getIntent();
         userEmail = intent.getStringExtra("userEmail");
         step_goal = intent.getStringExtra("step_goal");
@@ -164,6 +162,8 @@ public class Step extends AppCompatActivity {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                LocalDate getToday = LocalDate.now();
+                txtDateTimeStep.setText(getToday.getDayOfWeek() +", "+ getToday.getMonth()+" "+getToday.getDayOfMonth());
                 if("empty".equals(step_goal)){
                     txtCountStep.setText("0");
                     txtKcalStep.setText("0");
