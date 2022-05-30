@@ -24,7 +24,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity
+            android:name=".WorkoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePassWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+
             android:name=".WaterActivity"
+
             android:exported="false" />
         <activity
             android:name=".UsageStatistics"

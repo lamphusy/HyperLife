@@ -181,7 +181,7 @@ public class WorkoutFragment extends Fragment {
                 intent.putExtra("workoutTitle", gymListTitleIntermediate[position]);
                 intent.putExtra("workoutImage", gymListImage[position]);
                 intent.putExtra("workoutTime",gymListTime[position]);
-                intent.putExtra("focusBodyPart",focusBodyPart[position]);
+                intent.putExtra("focus BodyPart",focusBodyPart[position]);
                 startActivity(intent);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }

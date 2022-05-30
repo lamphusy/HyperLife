@@ -36,10 +36,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hyperlife.model.UserHelperClass;
 
+
+
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class SignUpActivity extends AppCompatActivity {
     //    TextView txtDate;
@@ -196,7 +200,8 @@ public class SignUpActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         String tempGender = getGender(maleCheckbox, femaleCheckbox);
-                                        CreateUserOnFirebase(email, username, pass, tempGender, mDate);
+                                        String passworldHashed = BCrypt.withDefaults().hashToString(12, pass.toCharArray());
+                                        CreateUserOnFirebase(email, username, passworldHashed, tempGender, mDate);
 
                                         Toast.makeText(SignUpActivity.this, "Sign Up Successfully !!", Toast.LENGTH_SHORT).show();
                                         //..........
@@ -236,7 +241,7 @@ public class SignUpActivity extends AppCompatActivity {
         Map<String, Object> user = new HashMap<>();
         user.put("name", userName);
         user.put("email", userEmail);
-        user.put("passwprd", password);
+        user.put("password", password);
         user.put("gender", gender);
         user.put("join_date", today.toString());
         user.put("date_of_birth", dateOfBirth);
