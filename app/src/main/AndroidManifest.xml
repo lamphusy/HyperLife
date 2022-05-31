@@ -30,8 +30,8 @@
             android:name=".ChangePassWordActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
-
+            android:name=".ForgotPasswordActivity"/>
+        <activity
             android:name=".WaterActivity"
 
             android:exported="false" />
