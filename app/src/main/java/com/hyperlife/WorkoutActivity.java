@@ -221,7 +221,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                         });
                                     }
                                 } else {
-                                    Log.d("LOGGER", "No such document");
+                                    Log.d("LOGGER", "No such document workout");
                                 }
                             } else {
                                 Log.d("LOGGER", "get failed with ", task.getException());
@@ -367,10 +367,7 @@ public class WorkoutActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WorkoutActivity.this, MainActivity.class);
-                intent.putExtra("fragmentPosition", 2);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
             }
         });
     }
