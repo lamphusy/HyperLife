@@ -24,8 +24,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.hyperlife.ListDataActivity;
 import com.hyperlife.R;
-import com.hyperlife.WorkoutDataActivity;
 import com.hyperlife.WorkoutHistoryActivity;
 import com.hyperlife.adapter.GymListViewAdapter;
 import com.hyperlife.model.NonScrollListView;
@@ -43,6 +43,10 @@ public class WorkoutFragment extends Fragment {
     private static final String tempEmail = "tempEmail";
     private String workoutLabel,workoutDuration,workoutImage;
     private LinearLayout timeLinear;
+
+    /**
+     * Gym listview
+     */
     private NonScrollListView listView,listView_intermediate,listView_advanced;
     private String[] gymListTitle = {"Abs - Beginner",
             "Chest - Beginner",
@@ -66,33 +70,45 @@ public class WorkoutFragment extends Fragment {
             R.drawable.arm_workout_image,
             R.drawable.leg_workout_image,
             R.drawable.shoulder_workout_image};
+    /**
+     * Gym listview
+     */
+
     public WorkoutFragment() {
         // Required empty public constructor
+    }
+
+    public void callParentMethod(){
+        getActivity().onBackPressed();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_workout, container, false);
-        viewButtonExercises = (FloatingActionButton) view.findViewById(R.id.fab_exercises);
-        workoutHeadline = (TextView) view.findViewById(R.id.workout_headline);
-        workoutTitle = (TextView) view.findViewById(R.id.workout_title);
-        clockIcon = (ImageView) view.findViewById(R.id.clockIcon);
-        workoutTime = (TextView) view.findViewById(R.id.workout_time);
-        timeLinear =(LinearLayout) view.findViewById(R.id.time_linear);
-        workoutRecommended =(TextView) view.findViewById(R.id.workout_recommended);
-        viewAll =(TextView) view.findViewById(R.id.view_all_button);
+        View rootView = inflater.inflate(R.layout.fragment_workout, container, false);
+
+        viewButtonExercises = (FloatingActionButton) rootView.findViewById(R.id.fab_exercises);
+        workoutHeadline = (TextView) rootView.findViewById(R.id.workout_headline);
+        workoutTitle = (TextView) rootView.findViewById(R.id.workout_title);
+        clockIcon = (ImageView) rootView.findViewById(R.id.clockIcon);
+        workoutTime = rootView.findViewById(R.id.workout_time);
+        timeLinear = rootView.findViewById(R.id.time_linear);
+        workoutRecommended = rootView.findViewById(R.id.workout_recommended);
+        viewAll = rootView.findViewById(R.id.view_all_button);
+
         SharedPreferences sharedPreferences = this.getActivity().
                 getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
+
         firestore = FirebaseFirestore.getInstance();
-        Runnable workoutRunnable = new Runnable() {
+
+        Runnable getRecentWorkoutRunnable = new Runnable() {
             @Override
             public void run() {
                 docRef = firestore.collection("workoutHistory").document(theTempEmail);
@@ -117,7 +133,7 @@ public class WorkoutFragment extends Fragment {
                                     viewButtonExercises.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            Intent intent = new Intent(getContext(), WorkoutDataActivity.class);
+                                            Intent intent = new Intent(getContext(), ListDataActivity.class);
                                             intent.putExtra("workoutTitle", workoutLabel);
                                             intent.putExtra("workoutImage", Integer.parseInt(workoutImage));
                                             intent.putExtra("workoutTime",workoutDuration);
@@ -143,13 +159,12 @@ public class WorkoutFragment extends Fragment {
             }
         };
 
-        Thread workoutThread = new Thread(workoutRunnable);
-        workoutThread.start();
+        Thread getRecentWorkoutThread = new Thread(getRecentWorkoutRunnable);
+        getRecentWorkoutThread.start();
 
-
-        listView = (NonScrollListView) view.findViewById(R.id.classic_workout_listview);
+        listView = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview);
         GymListViewAdapter listViewAdapter = new GymListViewAdapter(getActivity(),
-                R.layout.item_list_workout,
+                R.layout.item_workout_list,
                 gymListImage,
                 gymListTitle,
                 gymListTime);
@@ -157,7 +172,7 @@ public class WorkoutFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), WorkoutDataActivity.class);
+                Intent intent = new Intent(getContext(), ListDataActivity.class);
                 intent.putExtra("workoutTitle", gymListTitle[position]);
                 intent.putExtra("workoutImage", gymListImage[position]);
                 intent.putExtra("workoutTime",gymListTime[position]);
@@ -167,9 +182,9 @@ public class WorkoutFragment extends Fragment {
             }
         });
 
-        listView_intermediate = (NonScrollListView) view.findViewById(R.id.classic_workout_listview_intermediate);
+        listView_intermediate = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview_intermediate);
         GymListViewAdapter listViewAdapter_intermediate = new GymListViewAdapter(getActivity(),
-                R.layout.item_list_workout,
+                R.layout.item_workout_list,
                 gymListImage,
                 gymListTitleIntermediate,
                 gymListTime);
@@ -177,19 +192,19 @@ public class WorkoutFragment extends Fragment {
         listView_intermediate.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), WorkoutDataActivity.class);
+                Intent intent = new Intent(getContext(), ListDataActivity.class);
                 intent.putExtra("workoutTitle", gymListTitleIntermediate[position]);
                 intent.putExtra("workoutImage", gymListImage[position]);
                 intent.putExtra("workoutTime",gymListTime[position]);
-                intent.putExtra("focus BodyPart",focusBodyPart[position]);
+                intent.putExtra("focusBodyPart",focusBodyPart[position]);
                 startActivity(intent);
                 requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.hold_position);
             }
         });
 
-        listView_advanced = (NonScrollListView) view.findViewById(R.id.classic_workout_listview_advanced);
+        listView_advanced = (NonScrollListView) rootView.findViewById(R.id.classic_workout_listview_advanced);
         GymListViewAdapter listViewAdapter_advanced = new GymListViewAdapter(getActivity(),
-                R.layout.item_list_workout,
+                R.layout.item_workout_list,
                 gymListImage,
                 gymListTitleAdvanced,
                 gymListTime);
@@ -197,7 +212,7 @@ public class WorkoutFragment extends Fragment {
         listView_advanced.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getContext(), WorkoutDataActivity.class);
+                Intent intent = new Intent(getContext(), ListDataActivity.class);
                 intent.putExtra("workoutTitle", gymListTitleAdvanced[position]);
                 intent.putExtra("workoutImage", gymListImage[position]);
                 intent.putExtra("workoutTime",gymListTime[position]);
@@ -227,7 +242,6 @@ public class WorkoutFragment extends Fragment {
             }
         });
 
-        return view;
-
+        return rootView;
     }
 }
