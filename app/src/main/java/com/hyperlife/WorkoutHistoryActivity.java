@@ -1,21 +1,34 @@
 package com.hyperlife;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.hyperlife.adapter.WorkoutHistoryRecyclerViewAdapter;
 import com.hyperlife.model.ExerciseHistoryItem;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class WorkoutHistoryActivity extends AppCompatActivity {
+
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private static final String tempEmail = "tempEmail";
@@ -24,30 +37,68 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ImageView backbutton;
     private TextView noHistoryLabel;
-    private SharedPreferences sharedPreferences;
-    private String theTempEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout_history);
-        addControls();
-        addEvents();
-    }
 
-    private void addEvents() {
-
-    }
-
-    private void addControls() {
         firestore = FirebaseFirestore.getInstance();
-        sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-        theTempEmail = sharedPreferences.getString("Email", "");
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
         recyclerView = findViewById(R.id.history_recycler_view);
         backbutton = findViewById(R.id.button_backtohomefrag_history);
         noHistoryLabel = findViewById(R.id.no_history_label);
 
         exerciseHistoryItems = new ArrayList<>();
+
+        Runnable setUpHistory = new Runnable() {
+            @Override
+            public void run() {
+                firestore.collection("workoutHistory")
+                        .document(theTempEmail).collection("History").orderBy("firebaseTime", Query.Direction.DESCENDING)
+                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                ExerciseHistoryItem tempItem = new ExerciseHistoryItem(
+                                        document.getString("workoutTitle"),
+                                        document.getString("workoutDate"),
+                                        document.getString("workoutDayTime"),
+                                        document.getString("workoutTime"),
+                                        document.getString("workoutKcal"),
+                                        Integer.parseInt(Objects.requireNonNull(document.getString("workoutImage")))
+                                );
+                                exerciseHistoryItems.add(tempItem);
+                            }
+
+                            if(exerciseHistoryItems.size() == 0) {
+                                noHistoryLabel.setVisibility(View.VISIBLE);
+                            } else {
+                                recyclerViewAdapter = new WorkoutHistoryRecyclerViewAdapter(WorkoutHistoryActivity.this,exerciseHistoryItems);
+                                recyclerView.setAdapter(recyclerViewAdapter);
+                                recyclerView.setLayoutManager(new LinearLayoutManager(WorkoutHistoryActivity.this));
+                                noHistoryLabel.setVisibility(View.GONE);
+                            }
+
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+            }
+        };
+
+        Thread backgroundThread = new Thread(setUpHistory);
+        backgroundThread.start();
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }

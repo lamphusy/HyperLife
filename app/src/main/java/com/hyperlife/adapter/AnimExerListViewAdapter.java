@@ -14,31 +14,32 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.request.target.ViewTarget;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hyperlife.R;
 
 import java.util.ArrayList;
 
-import javax.sql.DataSource;
-
-public class AnimExerAdapter extends BaseAdapter {
-    private ArrayList<String> title, textDetail, videoUri;
+public class AnimExerListViewAdapter extends BaseAdapter {
+    private ArrayList<String> title,textDetail,videoUri;
     private Context context;
-    private View tempView;
+    private View view;
     private int resource;
     private Holder holder;
     private FirebaseFirestore firestore;
     private DocumentReference docRef;
     private String[] exerciseContainer;
 
-    public AnimExerAdapter(Context context, int resource, ArrayList<String> title, ArrayList<String> textDetail, ArrayList<String> videoUri) {
+    public AnimExerListViewAdapter(Context context,int resource,
+                                   ArrayList<String> title,
+                                   ArrayList<String> textDetail,
+                                   ArrayList<String> videoUri){
         super();
         this.context = context;
         this.title = title;
@@ -47,39 +48,40 @@ public class AnimExerAdapter extends BaseAdapter {
         this.resource = resource;
     }
 
+
     @Override
     public int getCount() {
         return title.size();
     }
 
     @Override
-    public Object getItem(int i) {
+    public Object getItem(int position) {
         return null;
     }
 
     @Override
-    public long getItemId(int i) {
+    public long getItemId(int position) {
         return 0;
     }
 
     @SuppressLint("ViewHolder")
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        tempView = inflater.inflate(resource, viewGroup, false);
+        view = inflater.inflate(resource,parent,false);
 
-        holder = new AnimExerAdapter.Holder();
-        holder.exerciseTitle = (TextView) tempView.findViewById(R.id.exercises_workout_title);
-        holder.exerciseText = (TextView) tempView.findViewById(R.id.exercises_workout_duration);
-        holder.exerciseGif = (ImageView) tempView.findViewById(R.id.exercises_video);
-        holder.frameLayout = (FrameLayout) tempView.findViewById(R.id.exercises_video_frame);
-        holder.loadingIcon = (ImageView) tempView.findViewById(R.id.loading_image_list_data);
+        holder = new AnimExerListViewAdapter.Holder();
+        holder.exerciseTitle = (TextView) view.findViewById(R.id.exercises_workout_title);
+        holder.exerciseText = (TextView) view.findViewById(R.id.exercises_workout_duration);
+        holder.exerciseGif = (ImageView) view.findViewById(R.id.exercises_video);
+        holder.frameLayout = (FrameLayout) view.findViewById(R.id.exercises_video_frame);
+        holder.loadingIcon = (ImageView) view.findViewById(R.id.loading_image_list_data);
 
-        holder.exerciseTitle.setText(title.get(i));
-        holder.exerciseText.setText(textDetail.get(i));
+        holder.exerciseTitle.setText(title.get(position));
+        holder.exerciseText.setText(textDetail.get(position));
 
-        ViewTarget<ImageView, Drawable> into = Glide.with(context)
-                .load(videoUri.get(i))
+        Glide.with(context)
+                .load(videoUri.get(position))
                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                 .listener(new RequestListener<Drawable>() {
                     @Override
@@ -88,24 +90,21 @@ public class AnimExerAdapter extends BaseAdapter {
                     }
 
                     @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, com.bumptech.glide.load.DataSource dataSource, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         holder.exerciseGif.setVisibility(View.VISIBLE);
                         holder.loadingIcon.setVisibility(View.GONE);
                         return false;
-
                     }
-
-
                 })
                 .into(holder.exerciseGif);
 
 
         return view;
     }
-
-    public class Holder {
-        TextView exerciseTitle, exerciseText;
-        ImageView exerciseGif, loadingIcon;
+    public class Holder
+    {
+        TextView exerciseTitle,exerciseText;
+        ImageView exerciseGif,loadingIcon;
         FrameLayout frameLayout;
     }
 }

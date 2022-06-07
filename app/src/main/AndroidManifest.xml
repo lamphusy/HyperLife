@@ -24,7 +24,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity
+            android:name=".WorkoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePassWordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"/>
+        <activity
             android:name=".WaterActivity"
+
             android:exported="false" />
         <activity
             android:name=".UsageStatistics"
@@ -53,7 +62,7 @@
 
         <receiver android:name=".model.AlarmReceiver" />
         <receiver android:name=".model.ReminderWaterReceiver" />
-        <activity android:name=".WorkoutDataActivity" />
+        <activity android:name=".ListDataActivity" />
     </application>
 
 </manifest>

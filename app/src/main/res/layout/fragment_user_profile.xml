@@ -21,7 +21,7 @@
 
             <LinearLayout
                 android:id="@+id/profilepiclayout"
-                android:layout_width="150dp"
+                android:layout_width="140dp"
                 android:layout_height="150dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/button_bg_white"
@@ -73,7 +73,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/id_fullname"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@color/light_grey"
                 android:drawableLeft="@drawable/email"
                 android:padding="10dp"
@@ -112,11 +115,28 @@
                 android:textSize="16sp"
                 app:drawableRightCompat="@drawable/ic_pencil" />
 
+            <TextView
+                android:id="@+id/txtChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/id_gender"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/light_grey"
+                android:hint="Change password"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:drawableRightCompat="@drawable/ic_pencil" />
+
             <LinearLayout
                 android:id="@+id/linearlogout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/id_gender"
+                android:layout_below="@id/txtChangePassword"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/nav_menu_item_background"
@@ -141,6 +161,8 @@
                     android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium" />
             </LinearLayout>
         </RelativeLayout>
+
+
 
         <ImageView
             android:layout_width="wrap_content"

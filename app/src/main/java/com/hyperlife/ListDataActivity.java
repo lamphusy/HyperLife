@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
@@ -18,18 +19,20 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.hyperlife.adapter.AnimExerAdapter;
+import com.hyperlife.adapter.AnimExerListViewAdapter;
 import com.hyperlife.adapter.AnimExerViewPagerAdapter;
 import com.hyperlife.model.NonScrollListView;
 
@@ -37,11 +40,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorkoutDataActivity extends AppCompatActivity {
+public class ListDataActivity extends YouTubeBaseActivity {
     private ImageView workoutImage, backButton, plusButton, minusButton;
     private TextView workoutTitle, workoutTime, exerciseTitle, exerciseDurationValue,
             exerciseDurationText, animTitle, videoTitle, focusArea, workoutBigTitle,
-            animCloseBtn, exerciseCount, startWorkoutButton, textDetail, lastTextDetail;
+            animCloseBtn, exerciseCount, startWorkoutButton,textDetail,lastTextDetail;
     private LinearLayout startButtonAnimExer;
     private ConstraintLayout bottomSheetContainer, selectedBackground;
     private ViewPager2 viewPager2;
@@ -54,52 +57,65 @@ public class WorkoutDataActivity extends AppCompatActivity {
             workoutDurationValue, workoutDurationType, workoutVideoUrl, workoutHDUrl,
             editWorkoutTitle, editWorkoutDuration, editWorkoutDurationValue, textDetailList;
     private NonScrollListView listView;
-    private Thread getExerciseChangeThread, backgroundThread;
+    private Thread getExerciseChangeThread,backgroundThread;
     private static final String tempEmail = "tempEmail";
-    private Intent listExerciseIntent;
-    private SharedPreferences sharedPreferences;
-    private String theTempEmail, tempString;
+
+    /*animation exercise viewpager*/
+
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_workout_data);
-        addControls();
-        addEvents();
-    }
+        setContentView(R.layout.activity_list_data);
 
-    private void addEvents() {
-        changeExercise();
-        controlHomeBackground();
-        controllAppBar();
-    }
+        Intent intentListExercise = getIntent();
 
-    private void controllAppBar() {
-        /**setting up intent from gym fragment*/
+        workoutTitle = (TextView) findViewById(R.id.gym_list_workout_text);
+        workoutBigTitle = (TextView) findViewById(R.id.title_list_data);
+        workoutTime = (TextView) findViewById(R.id.time_title_list_data);
+        exerciseCount = (TextView) findViewById(R.id.exercises_count_list_data);
+        focusArea = (TextView) findViewById(R.id.area_focus_title_list_data);
+        workoutImage = (ImageView) findViewById(R.id.gym_list_image_view);
+        backButton = (ImageView) findViewById(R.id.back_button_list_data);
+        bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_exer_anim);
+        startButtonAnimExer = (LinearLayout) findViewById(R.id.start_button_anim_exer_linear);
+        startWorkoutButton = findViewById(R.id.start_button_exercise_list);
 
-        workoutTitle.setText(listExerciseIntent.getStringExtra("workoutTitle"));
-        workoutImage.setImageResource(listExerciseIntent.getIntExtra("workoutImage", 0));
-        workoutTime.setText(listExerciseIntent.getStringExtra("workoutTime"));
-        focusArea.setText(listExerciseIntent.getStringExtra("focusBodyPart"));
-        workoutBigTitle.setText(listExerciseIntent.getStringExtra("focusBodyPart"));
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
 
+        firestore = FirebaseFirestore.getInstance();
 
-        /**app bar animation*/
-        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.gym_list_app_bar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+        String tempString = intentListExercise.getStringExtra("workoutTitle");
+
+        Runnable trackEditDataRunnable = new Runnable() {
             @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-                    workoutTitle.setAlpha(1f);
-                } else if (verticalOffset == 0) {
-                    workoutTitle.setAlpha(0f);
-                } else {
-                    workoutTitle.setAlpha(0.3f);
-                }
+            public void run() {
+                editWorkoutTitle = new ArrayList<>();
+                editWorkoutDuration = new ArrayList<>();
+                editWorkoutDurationValue = new ArrayList<>();
+                firestore.collection("users").document(theTempEmail).
+                        collection("exerciseChange").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                editWorkoutDuration.add(document.get("duration").toString());
+                                editWorkoutDurationValue.add(document.get("duration_value").toString());
+                                editWorkoutTitle.add(document.getId());
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
             }
-        });
-    }
+        };
 
-    private void controlHomeBackground() {
+        getExerciseChangeThread = new Thread(trackEditDataRunnable);
+        getExerciseChangeThread.start();
+
         Runnable homeBackGroundRunnable = new Runnable() {
             @Override
             public void run() {
@@ -112,6 +128,7 @@ public class WorkoutDataActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document != null) {
+                                    Toast.makeText(getApplicationContext(), "Documentation got", Toast.LENGTH_LONG).show();
                                     exercise_contain = document.getString("exercise_contain");
                                     assert exercise_contain != null;
                                     exerciseList = exercise_contain.split("-");
@@ -156,14 +173,14 @@ public class WorkoutDataActivity extends AppCompatActivity {
                                                             }
                                                         }
                                                         listView = findViewById(R.id.list_view_list_data);
-                                                        AnimExerAdapter animExerListViewAdapter = new AnimExerAdapter(WorkoutDataActivity.this,
-                                                                R.layout.item_list_workout_data, workoutTitleList, workoutDuration, workoutUri);
+                                                        AnimExerListViewAdapter animExerListViewAdapter = new AnimExerListViewAdapter(ListDataActivity.this,
+                                                                R.layout.item_exercises_list_data, workoutTitleList, workoutDuration, workoutUri);
                                                         listView.setAdapter(animExerListViewAdapter);
                                                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                             @Override
                                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
-                                                                        WorkoutDataActivity.this, R.style.BottomSheetDialogTheme);
+                                                                        ListDataActivity.this, R.style.BottomSheetDialogTheme);
                                                                 View bottomSheetView = LayoutInflater.from(getApplicationContext())
                                                                         .inflate(
                                                                                 R.layout.bottom_sheet_dialog_anim_exer,
@@ -189,7 +206,7 @@ public class WorkoutDataActivity extends AppCompatActivity {
                                                                 /**setting up viewpager in animaiton exercise*/
                                                                 animExerViewPagerAdapter = new AnimExerViewPagerAdapter(workoutHDUrl, workoutVideoUrl
                                                                         , position
-                                                                        , WorkoutDataActivity.this);
+                                                                        , ListDataActivity.this);
                                                                 viewPager2 = bottomSheetView.findViewById(R.id.animation_exercise_viewPager);
                                                                 viewPager2.setAdapter(animExerViewPagerAdapter);
 
@@ -292,7 +309,7 @@ public class WorkoutDataActivity extends AppCompatActivity {
                                         });
                                     }
                                 } else {
-                                    Log.d("LOGGER", "No such document");
+                                    Log.d("LOGGER", "No such document list data");
                                 }
                             } else {
                                 Log.d("LOGGER", "get failed with ", task.getException());
@@ -311,10 +328,10 @@ public class WorkoutDataActivity extends AppCompatActivity {
         startWorkoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WorkoutDataActivity.this, WorkoutDataActivity.class);
+                Intent intent = new Intent(ListDataActivity.this, WorkoutActivity.class);
                 intent.putExtra("workoutTitle", tempString);
-                intent.putExtra("workoutImage",listExerciseIntent.getIntExtra("workoutImage", 0));
-                intent.putExtra("workoutTime",listExerciseIntent.getStringExtra("workoutTime"));
+                intent.putExtra("workoutImage",intentListExercise.getIntExtra("workoutImage", 0));
+                intent.putExtra("workoutTime",intentListExercise.getStringExtra("workoutTime"));
                 intent.putExtra("workoutTotalExercise", String.valueOf(workoutTitleList.size()));
                 startActivity(intent);
                 finish();
@@ -327,61 +344,37 @@ public class WorkoutDataActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WorkoutDataActivity.this, MainActivity.class);
-                intent.putExtra("fragmentPosition", 2);
-                startActivity(intent);
+
+//                Intent intent = new Intent(ListDataActivity.this, MainActivity.class);
+//                intent.putExtra("fragmentPosition", 2);
+//                startActivity(intent);
                 finish();
-                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                //overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 
-    }
+        /**setting up intent from gym fragment*/
 
-    private void changeExercise() {
-        Runnable trackEditDataRunnable = new Runnable() {
+        workoutTitle.setText(intentListExercise.getStringExtra("workoutTitle"));
+        workoutImage.setImageResource(intentListExercise.getIntExtra("workoutImage", 0));
+        workoutTime.setText(intentListExercise.getStringExtra("workoutTime"));
+        focusArea.setText(intentListExercise.getStringExtra("focusBodyPart"));
+        workoutBigTitle.setText(intentListExercise.getStringExtra("focusBodyPart"));
+
+
+        /**app bar animation*/
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.gym_list_app_bar);
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
-            public void run() {
-                editWorkoutTitle = new ArrayList<>();
-                editWorkoutDuration = new ArrayList<>();
-                editWorkoutDurationValue = new ArrayList<>();
-                firestore.collection("users").document(theTempEmail).
-                        collection("exerciseChange").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                editWorkoutDuration.add(document.get("duration").toString());
-                                editWorkoutDurationValue.add(document.get("duration_value").toString());
-                                editWorkoutTitle.add(document.getId());
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+                    workoutTitle.setAlpha(1f);
+                } else if (verticalOffset == 0) {
+                    workoutTitle.setAlpha(0f);
+                } else {
+                    workoutTitle.setAlpha(0.3f);
+                }
             }
-        };
-        getExerciseChangeThread = new Thread(trackEditDataRunnable);
-        getExerciseChangeThread.start();
-    }
-
-    private void addControls() {
-        workoutTitle = (TextView) findViewById(R.id.gym_list_workout_text);
-        workoutBigTitle = (TextView) findViewById(R.id.title_list_data);
-        workoutTime = (TextView) findViewById(R.id.time_title_list_data);
-        exerciseCount = (TextView) findViewById(R.id.exercises_count_list_data);
-        focusArea = (TextView) findViewById(R.id.area_focus_title_list_data);
-        workoutImage = (ImageView) findViewById(R.id.gym_list_image_view);
-        backButton = (ImageView) findViewById(R.id.back_button_list_data);
-        bottomSheetContainer = (ConstraintLayout) findViewById(R.id.bottom_sheet_container_exer_anim);
-        startButtonAnimExer = (LinearLayout) findViewById(R.id.start_button_anim_exer_linear);
-        startWorkoutButton = findViewById(R.id.start_button_exercise_list);
-
-        listExerciseIntent = getIntent();
-        firestore = FirebaseFirestore.getInstance();
-        sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
-
-        theTempEmail = sharedPreferences.getString("Email", "");
-        tempString = listExerciseIntent.getStringExtra("workoutTitle");
+        });
     }
 }

@@ -219,7 +219,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                             }
                         }
                     } else {
-                        Log.d("LOGGER", "No such document");
+                        Log.d("LOGGER", "No such document num step home");
                     }
                 } else {
                     Log.d("LOGGER", "get failed with ", task.getException());
@@ -409,7 +409,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                                             SetupWaterCard(email);
                                             SetupCaloCard(email);
                                         } else {
-                                            Log.d("LOGGER", "No such document");
+                                            Log.d("LOGGER", "No such document week of ...");
 
                                         }
                                     } else {
@@ -445,7 +445,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                             txtCalo.setText(calories + "");
                         }
                     }else {
-                        Log.d("LOGGER", "No such document");
+                        Log.d("LOGGER", "No such document calo set");
                     }
                 } else {
                     Log.d("LOGGER", "get failed with ", task.getException());
@@ -475,7 +475,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                             txtTimeOnScreen.setText(splitHourOnScreen[0]);
                         }
                     }else{
-                        Log.d("LOGGER","No such document");
+                        Log.d("LOGGER","No such document time on screen");
                     }
                 }else{
                     Log.d("LOGGER","get failed with ", task.getException());
@@ -506,7 +506,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                             cardSleep.setClickable(true);
                         }
                     } else {
-                        Log.d("LOGGER", "No such document");
+                        Log.d("LOGGER", "No such document sleep time");
                     }
                 } else {
                     Log.d("LOGGER", "get failed with ", task.getException());
@@ -540,7 +540,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                             txtNumOfWater.setText(waterHadDrink + "");
                             cardWater.setClickable(true);
                         }else {
-                            Log.d("LOGGER", "No such document");
+                            Log.d("LOGGER", "No such document water drink");
                         }
                     } else {
                         Log.d("LOGGER", "get failed with ", task.getException());
@@ -592,7 +592,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
                         cardStep.setClickable(true);
                     }else {
-                        Log.d("LOGGER", "No such document");
+                        Log.d("LOGGER", "No such document drink, step,...");
                     }
                 } else {
                     Log.d("LOGGER", "get failed with ", task.getException());
@@ -667,7 +667,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                             }
                         }
                     } else {
-                        Log.d("LOGGER", "No such document");
+                        Log.d("LOGGER", "No such document step");
                     }
                 } else {
                     Log.d("LOGGER", "get failed with ", task.getException());

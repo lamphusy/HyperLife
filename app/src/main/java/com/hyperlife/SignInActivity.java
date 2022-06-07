@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,7 +26,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-
 public class SignInActivity extends AppCompatActivity {
     private EditText txtEmail, txtPassword;
     private Button btnSignIn, btnSignUp, btnForgot;
@@ -62,6 +62,7 @@ public class SignInActivity extends AppCompatActivity {
                                      }
         );
         SignUp();
+
     }
 
     private void SignUp() {
@@ -75,48 +76,9 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void createUserOnFirebase(String userEmail, String userName) {
-        //Set up firestore
-        db = FirebaseFirestore.getInstance();
-        LocalDate today = LocalDate.now();
-
-        // Save user data to firestore
-        Map<String, Object> user = new HashMap<>();
-        user.put("name", userName);
-        user.put("email", userEmail);
-        user.put("gender", "empty");
-        user.put("date_of_birth", "empty");
-        user.put("join_date", today.toString());
-        user.put("weight", "empty");
-        user.put("height", "empty");
-        user.put("step_goal", "empty");
-        user.put("drink_goal", "empty");
-        user.put("calories_burn_goal", "empty");
-        user.put("sleep_goal", "empty");
-        user.put("on_screen_goal", "empty");
-        user.put("recent_workout", "empty");
-        user.put("time_to_sleep", "empty");
-        db.collection("users").document(userEmail)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SignInActivity.this, "Fail to save data to Firestore", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
     private void SignIn() {
         String email = txtEmail.getText().toString();
         String pass = txtPassword.getText().toString();
-
         if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             if (!pass.isEmpty()) {
                 mAuth.signInWithEmailAndPassword(email, pass)
@@ -162,5 +124,7 @@ public class SignInActivity extends AppCompatActivity {
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
         btnForgot = (Button) findViewById(R.id.btnForgot);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        btnFacebook = (Button) findViewById(R.id.btnFacebook);
+        btnGoogle = (MaterialButton) findViewById(R.id.btnGoogle);
     }
 }
