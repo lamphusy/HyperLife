@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
         EditText editTextName = nameDialog.findViewById(R.id.edit_text_name);
         AppCompatButton cancelButton = nameDialog.findViewById(R.id.cancel_button_name_edit);
-        Button saveButton = nameDialog.findViewById(R.id.save_button_name_edit);
+        AppCompatButton saveButton = nameDialog.findViewById(R.id.save_button_name_edit);
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox femaleCheckbox = genderDialog.findViewById(R.id.female_checkbox_edit);
         CheckBox maleCheckbox = genderDialog.findViewById(R.id.male_checkbox_edit);
         AppCompatButton cancelButton = genderDialog.findViewById(R.id.cancel_button_name_edit);
-        Button saveButton = genderDialog.findViewById(R.id.save_button_name_edit);
+        AppCompatButton saveButton = genderDialog.findViewById(R.id.save_button_name_edit);
 
         maleCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -344,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView datePicker = birthDayDialog.findViewById(R.id.date_picker_edit);
         AppCompatButton cancelButton = birthDayDialog.findViewById(R.id.cancel_button_name_edit);
-        Button saveButton = birthDayDialog.findViewById(R.id.save_button_name_edit);
+        AppCompatButton saveButton = birthDayDialog.findViewById(R.id.save_button_name_edit);
 
         datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
