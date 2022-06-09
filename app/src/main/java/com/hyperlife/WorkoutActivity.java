@@ -280,7 +280,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 final Context context = getApplication().getApplicationContext();
 
-                Glide.with(WorkoutActivity.this)
+                Glide.with(getApplicationContext())
                         .load(workoutUri.get(exercisePos))
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                         .listener(new RequestListener<Drawable>() {
@@ -462,7 +462,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             loadingIcon.setVisibility(View.VISIBLE);
 
-            Glide.with(WorkoutActivity.this)
+            Glide.with(getApplicationContext())
                     .load(workoutUri.get(exercisePos))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .listener(new RequestListener<Drawable>() {
