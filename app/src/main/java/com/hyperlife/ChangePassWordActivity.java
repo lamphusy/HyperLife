@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -147,7 +146,7 @@ public class ChangePassWordActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         theTempEmail = sharedPreferences.getString("Email", "");
         firestore = FirebaseFirestore.getInstance();
-        txtOldPassword = (TextInputEditText) findViewById(R.id.oldPassword);
+        txtOldPassword = (TextInputEditText) findViewById(R.id.txtEmailToGetPassword);
         txtNewPassword = (TextInputEditText) findViewById(R.id.newPassword);
         txtConfirmPassword = (TextInputEditText) findViewById(R.id.confirmPassword);
         btnChangePassword = (Button) findViewById(R.id.btnChangePassword);
