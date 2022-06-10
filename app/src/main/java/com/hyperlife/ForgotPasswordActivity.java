@@ -21,6 +21,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private Button btnResetPassword;
     private TextView goBackToLogin;
     FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
                             if (task.isSuccessful()) {
                                 Toast.makeText(getApplicationContext(), "Please check your email to reset password!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getApplicationContext(), SignInActivity.class));
                             } else {
                                 Toast.makeText(getApplicationContext(), "Oops! Something went wrong.", Toast.LENGTH_SHORT).show();
                             }
