@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "172837360686-7e7i7rofo6ftkj0d63d2e7v83gsmo8ia.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hyperlife",
+            "certificate_hash": "0ef22cfd5de3176657c8aca5220c5d6ab82bc1fa"
+          }
+        },
+        {
           "client_id": "172837360686-m8s6clo4fsi3ln3aq2tapirol6r8nt5a.apps.googleusercontent.com",
           "client_type": 3
         }

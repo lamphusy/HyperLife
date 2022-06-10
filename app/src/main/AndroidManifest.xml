@@ -29,11 +29,9 @@
         <activity
             android:name=".ChangePassWordActivity"
             android:exported="false" />
-        <activity
-            android:name=".ForgotPasswordActivity"/>
+        <activity android:name=".ForgotPasswordActivity" />
         <activity
             android:name=".WaterActivity"
-
             android:exported="false" />
         <activity
             android:name=".UsageStatistics"
@@ -48,6 +46,8 @@
         <activity android:name=".OnBoardActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".SplashScreenActivity2" />
+        <activity android:name=".CompleteUserInfoActivity" />
+
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true">
@@ -62,6 +62,7 @@
 
         <receiver android:name=".model.AlarmReceiver" />
         <receiver android:name=".model.ReminderWaterReceiver" />
+
         <activity android:name=".ListDataActivity" />
     </application>
 
