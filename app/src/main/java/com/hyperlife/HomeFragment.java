@@ -60,7 +60,6 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     Sensor mStepCounter;
 
 
-
     private LinearLayout cardWater, cardStep, cardCalo,
             cardSleep, cardTraining, cardTime;
 
@@ -87,10 +86,10 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private String mParam2;
 
 
-
     public HomeFragment() {
         // Required empty public constructor
     }
+
     public HomeFragment(String userEmail) {
         this.userEmail = userEmail;
     }
@@ -131,11 +130,11 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        sensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getActivity().getSystemService(Context.SENSOR_SERVICE);
 
-        if(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
             mStepCounter = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-            sensorManager.registerListener(this,mStepCounter,SensorManager.SENSOR_DELAY_GAME);
+            sensorManager.registerListener(this, mStepCounter, SensorManager.SENSOR_DELAY_GAME);
         }
 
         //add control
@@ -164,7 +163,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardCalo.setClickable(false);
 
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(tempEmail, Context.MODE_PRIVATE);
-        theTempEmail = sharedPreferences.getString("Email","");
+        theTempEmail = sharedPreferences.getString("Email", "");
 
 
         //thread chay ngam cap nhat du lieu
@@ -172,21 +171,21 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
-                try{
+                try {
                     Calendar cal = Calendar.getInstance();
                     int hoursOfDay = cal.get(Calendar.HOUR_OF_DAY);
 
-                    if(hoursOfDay >= 0 && hoursOfDay < 12){
+                    if (hoursOfDay >= 0 && hoursOfDay < 12) {
                         txtGreeting.setText("Good morning");
-                    }else if(hoursOfDay >=12 && hoursOfDay< 18){
+                    } else if (hoursOfDay >= 12 && hoursOfDay < 18) {
                         txtGreeting.setText("Good afternoon");
-                    }else if(hoursOfDay >=18 && hoursOfDay< 21){
+                    } else if (hoursOfDay >= 18 && hoursOfDay < 21) {
                         txtGreeting.setText("Good evening");
-                    }else if(hoursOfDay >=21 && hoursOfDay< 24){
+                    } else if (hoursOfDay >= 21 && hoursOfDay < 24) {
                         txtGreeting.setText("Good night");
                     }
                     UpdateFirebase(theTempEmail);
-                }catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
@@ -231,8 +230,8 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardWater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),WaterActivity.class);
-                intent.putExtra("userEmail",theTempEmail);
+                Intent intent = new Intent(getActivity(), WaterActivity.class);
+                intent.putExtra("userEmail", theTempEmail);
                 startActivity(intent);
             }
         });
@@ -240,9 +239,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardStep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),Step.class);
-                intent.putExtra("userEmail",theTempEmail);
-                intent.putExtra("step_goal",step_goal);
+                Intent intent = new Intent(getActivity(), Step.class);
+                intent.putExtra("userEmail", theTempEmail);
+                intent.putExtra("step_goal", step_goal);
                 startActivity(intent);
             }
         });
@@ -250,16 +249,16 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardCalo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).handleChangeFragment(R.id.nav_meal);
-                ((MainActivity)getActivity()).btmNav.setSelectedItemId(R.id.nav_meal);
+                ((MainActivity) getActivity()).handleChangeFragment(R.id.nav_meal);
+                ((MainActivity) getActivity()).btmNav.setSelectedItemId(R.id.nav_meal);
             }
         });
 
         cardTraining.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity)getActivity()).handleChangeFragment(R.id.nav_workout);
-                ((MainActivity)getActivity()).btmNav.setSelectedItemId(R.id.nav_workout);
+                ((MainActivity) getActivity()).handleChangeFragment(R.id.nav_workout);
+                ((MainActivity) getActivity()).btmNav.setSelectedItemId(R.id.nav_workout);
             }
         });
 
@@ -267,7 +266,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UsageStatistics.class);
-                intent.putExtra("userEmail",userEmail);
+                intent.putExtra("userEmail", userEmail);
                 startActivity(intent);
             }
         });
@@ -275,9 +274,9 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         cardSleep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),SleepTime.class);
-                intent.putExtra("sleepTime",sleepTime);
-                intent.putExtra("userEmail",theTempEmail);
+                Intent intent = new Intent(getActivity(), SleepTime.class);
+                intent.putExtra("sleepTime", sleepTime);
+                intent.putExtra("userEmail", theTempEmail);
                 startActivity(intent);
             }
         });
@@ -287,140 +286,141 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void UpdateFirebase(String email) {
-            SharedPreferences sharedPreferences = this.getActivity().
-                    getSharedPreferences(tempEmail,Context.MODE_PRIVATE);
-            LocalDate today = LocalDate.now();
-            LocalDate monday = today.with(previousOrSame(MONDAY));
+        SharedPreferences sharedPreferences = this.getActivity().
+                getSharedPreferences(tempEmail, Context.MODE_PRIVATE);
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
 
-            firestore = FirebaseFirestore.getInstance();
-            firestore.collection("daily").
+        firestore = FirebaseFirestore.getInstance();
+        firestore.collection("daily").
                 document("week-of-" + monday.toString()).
                 collection(today.toString()).
                 document(email)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
-                    if(task.isSuccessful()){
-                        DocumentSnapshot documentSnapshot = task.getResult();
-                        if(documentSnapshot != null){
-                            if(documentSnapshot.exists() == true){
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            if (documentSnapshot != null) {
+                                if (documentSnapshot.exists() == true) {
 
-                                SharedPreferences.Editor editor;
-                                editor = sharedPreferences.edit();
-                                editor.putString("Email",email);
-                                editor.apply();
+                                    SharedPreferences.Editor editor;
+                                    editor = sharedPreferences.edit();
+                                    editor.putString("Email", email);
+                                    editor.apply();
 
-                                int numOfExercise = Integer.parseInt(documentSnapshot.getString("num_of_exercise"));
-                                if(numOfExercise == 0){
-                                    txtNumOfExercises.setText("No workout");
-                                }else if(numOfExercise == 1){
-                                    txtNumOfExercises.setText(numOfExercise+ " workout");
-                                }else{
-                                    txtNumOfExercises.setText(numOfExercise+ " workouts");
-                                }
-
-                                SetupStepCard(email);
-                                SetupWaterCard(email);
-                                SetupSleepCard(email);
-                                SetupTimeCard(email);
-                                SetupCaloCard(email);
-                            }
-                            else{
-
-                            docRef = firestore.collection("users")
-                                    .document(email);
-                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if(task.isSuccessful()){
-                                        DocumentSnapshot document = task.getResult();
-                                        if(document != null){
-                                            String water = document.getString("drink_goal");
-                                            String time = document.getString("sleep_goal");
-                                            String weight = document.getString("weight");
-                                            String height = document.getString("height");
-                                            String step = document.getString("step_goal");
-                                            String uName = document.getString("name");
-
-                                            userName.setText(uName);
-                                            txtNumOfExercises.setText("No workout");
-
-                                            docRef = firestore.collection("daily").
-                                                    document("week-of-"+ monday.toString()).
-                                                    collection(today.toString()).document(email);
-                                            Map<String,Object> Value = new HashMap<>();
-
-                                            if(water.equals("empty")){
-                                                Value.put("drink","empty");
-                                            }else{
-                                                Value.put("drink","0");
-                                            }
-
-                                            if(time.equals("empty")){
-                                                Value.put("sleep_time","empty");
-                                                Value.put("wake_time","empty");
-                                            }else{
-                                                Value.put("sleep_time","0");
-                                            }
-
-                                            if (weight.equals("empty")) {
-                                                Value.put("weight", "empty");
-                                            } else {
-                                                Value.put("weight", weight);
-                                            }
-
-                                            if (height.equals("empty")) {
-                                                Value.put("height", "empty");
-                                            } else {
-                                                Value.put("height", height);
-                                            }
-
-                                            if (step.equals("empty")) {
-                                                Value.put("steps", "empty");
-                                            } else {
-                                                Value.put("steps", "0");
-                                            }
-
-                                            Value.put("time_on_screen", "0");
-                                            Value.put("cal_step","0");
-                                            Value.put("km_step","0");
-                                            Value.put("reminder_water","false");
-                                            Value.put("diet", "0");
-
-                                            Value.put("num_of_exercise", "0");
-                                            Value.put("kcal_workout","0");
-                                            Value.put("userEmail", email);
-                                            Value.put("datetime",today.toString());
-
-                                            firestore = FirebaseFirestore.getInstance();
-                                            firestore.collection("daily")
-                                                    .document("week-of-"+ monday.toString())
-                                                    .collection(today.toString())
-                                                    .document(email)
-                                                    .set(Value);
-
-                                            SharedPreferences.Editor editor;
-                                            editor = sharedPreferences.edit();
-                                            editor.putString("Email",email);
-                                            editor.apply();
-                                            SetupStepCard(email);
-                                            SetupWaterCard(email);
-                                            SetupCaloCard(email);
-                                        } else {
-                                            Log.d("LOGGER", "No such document week of ...");
-
-                                        }
+                                    int numOfExercise = Integer.parseInt(documentSnapshot.getString("num_of_exercise"));
+                                    if (numOfExercise == 0) {
+                                        txtNumOfExercises.setText("No workout");
+                                    } else if (numOfExercise == 1) {
+                                        txtNumOfExercises.setText(numOfExercise + " workout");
                                     } else {
-                                        Log.d("LOGGER", "get failed with ", task.getException());
+                                        txtNumOfExercises.setText(numOfExercise + " workouts");
                                     }
+
+                                    SetupStepCard(email);
+                                    SetupWaterCard(email);
+                                    SetupSleepCard(email);
+                                    SetupTimeCard(email);
+                                    SetupCaloCard(email);
+                                } else {
+
+                                    docRef = firestore.collection("users")
+                                            .document(email);
+                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document != null) {
+                                                    String water = document.getString("drink_goal");
+                                                    String time = document.getString("sleep_goal");
+                                                    String weight = document.getString("weight");
+                                                    String height = document.getString("height");
+                                                    String step = document.getString("step_goal");
+                                                    String uName = document.getString("name");
+
+                                                    userName.setText(uName);
+                                                    txtNumOfExercises.setText("No workout");
+
+                                                    docRef = firestore.collection("daily").
+                                                            document("week-of-" + monday.toString()).
+                                                            collection(today.toString()).document(email);
+                                                    Map<String, Object> Value = new HashMap<>();
+                                                    if (water != null && time != null && weight != null && step != null && height != null) {
+                                                        if (water.equals("empty")) {
+                                                            Value.put("drink", "empty");
+                                                        } else {
+                                                            Value.put("drink", "0");
+                                                        }
+
+                                                        if (time.equals("empty")) {
+                                                            Value.put("sleep_time", "empty");
+                                                            Value.put("wake_time", "empty");
+                                                        } else {
+                                                            Value.put("sleep_time", "0");
+                                                        }
+
+                                                        if (weight.equals("empty")) {
+                                                            Value.put("weight", "empty");
+                                                        } else {
+                                                            Value.put("weight", weight);
+                                                        }
+
+                                                        if (height.equals("empty")) {
+                                                            Value.put("height", "empty");
+                                                        } else {
+                                                            Value.put("height", height);
+                                                        }
+
+                                                        if (step.equals("empty")) {
+                                                            Value.put("steps", "empty");
+                                                        } else {
+                                                            Value.put("steps", "0");
+                                                        }
+
+                                                        Value.put("time_on_screen", "0");
+                                                        Value.put("cal_step", "0");
+                                                        Value.put("km_step", "0");
+                                                        Value.put("reminder_water", "false");
+                                                        Value.put("diet", "0");
+
+                                                        Value.put("num_of_exercise", "0");
+                                                        Value.put("kcal_workout", "0");
+                                                        Value.put("userEmail", email);
+                                                        Value.put("datetime", today.toString());
+
+                                                        firestore = FirebaseFirestore.getInstance();
+                                                        firestore.collection("daily")
+                                                                .document("week-of-" + monday.toString())
+                                                                .collection(today.toString())
+                                                                .document(email)
+                                                                .set(Value);
+
+                                                        SharedPreferences.Editor editor;
+                                                        editor = sharedPreferences.edit();
+                                                        editor.putString("Email", email);
+                                                        editor.apply();
+                                                        SetupStepCard(email);
+                                                        SetupWaterCard(email);
+                                                        SetupCaloCard(email);
+                                                    }
+                                                } else {
+                                                    Log.d("LOGGER", "No such document week of ...");
+
+                                                }
+                                            } else {
+                                                Log.d("LOGGER", "get failed with ", task.getException());
+                                            }
+                                        }
+                                    });
                                 }
-                            });
-                        }}
+                            }
+                        }
                     }
-                }
-            });
+                });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -429,22 +429,22 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
         docRef = firestore.collection("daily")
-                .document("week-of-"+ monday.toString())
+                .document("week-of-" + monday.toString())
                 .collection(today.toString())
                 .document(userEmail);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if(document != null){
+                    if (document != null) {
                         String calo = document.getString("diet");
-                        if(!"0".equals(calo)){
+                        if (!"0".equals(calo)) {
                             float calories = Float.parseFloat(calo);
                             txtCalo.setText(calories + "");
                         }
-                    }else {
+                    } else {
                         Log.d("LOGGER", "No such document calo set");
                     }
                 } else {
@@ -459,26 +459,26 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         LocalDate today = LocalDate.now();
         LocalDate monday = today.with(previousOrSame(MONDAY));
         docRef = firestore.collection("daily")
-                .document("week-of-"+monday.toString())
+                .document("week-of-" + monday.toString())
                 .collection(today.toString())
                 .document(userEmail);
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if(document != null){
+                    if (document != null) {
                         String temp = document.getString("time_on_screen");
-                        if(!"0".equals(temp)){
+                        if (!"0".equals(temp)) {
                             String[] splitHourOnScreen = temp.split(" ");
                             txtTimeOnScreen.setText(splitHourOnScreen[0]);
                         }
-                    }else{
-                        Log.d("LOGGER","No such document time on screen");
+                    } else {
+                        Log.d("LOGGER", "No such document time on screen");
                     }
-                }else{
-                    Log.d("LOGGER","get failed with ", task.getException());
+                } else {
+                    Log.d("LOGGER", "get failed with ", task.getException());
                 }
             }
         });
@@ -500,7 +500,7 @@ public class HomeFragment extends Fragment implements SensorEventListener {
                     if (document != null) {
                         String temp = document.getString("sleep_goal");
                         if (!"empty".equals(temp)) {
-                             String[] splitString = temp.split(" ");
+                            String[] splitString = temp.split(" ");
                             txtSleepTime.setText(splitString[0]);
                             sleepTime = temp;
                             cardSleep.setClickable(true);
@@ -528,18 +528,18 @@ public class HomeFragment extends Fragment implements SensorEventListener {
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if(document!= null){
+                    if (document != null) {
                         String temp = document.getString("drink");
-                        if(!"empty".equals(temp) && temp != null){
+                        if (!"empty".equals(temp) && temp != null) {
                             float waterHadDrink = Float.parseFloat(temp);
-                            if(!temp.equals("0")){
-                                waterHadDrink = Float.parseFloat(temp)/1000;
+                            if (!temp.equals("0")) {
+                                waterHadDrink = Float.parseFloat(temp) / 1000;
                             }
                             txtNumOfWater.setText(waterHadDrink + "");
                             cardWater.setClickable(true);
-                        }else {
+                        } else {
                             Log.d("LOGGER", "No such document water drink");
                         }
                     } else {
@@ -553,45 +553,45 @@ public class HomeFragment extends Fragment implements SensorEventListener {
     private void SetupStepCard(String userEmail) {
         firestore = FirebaseFirestore.getInstance();
         docRef = firestore.collection("users")
-                    .document(userEmail);
+                .document(userEmail);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if(document != null){
+                    if (document != null) {
                         String uName = document.getString("name");
                         userName.setText(uName);
 
                         step_goal = document.getString("step_goal");
 
-                        if("empty".equals(step_goal)){
+                        if ("empty".equals(step_goal)) {
                             statusOfProgressBar.setText("steps");
                             setupStepGoal.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             setupStepGoal.setVisibility(View.GONE);
                             statusOfProgressBar.setText("/" + step_goal);
-                            txtStepCount.setText(""+numStepsHomeFrag);
+                            txtStepCount.setText("" + numStepsHomeFrag);
 
                             String tempStepGoal = statusOfProgressBar.getText().
                                     toString().substring(1);
                             progressBar.setMax(Integer.parseInt(tempStepGoal));
 
                             ProgressBarAnimation progressBarAnimation = new ProgressBarAnimation(progressBar,
-                                    numStepsHomeFrag-1,numStepsHomeFrag);
+                                    numStepsHomeFrag - 1, numStepsHomeFrag);
                             progressBarAnimation.setDuration(100);
                             progressBar.startAnimation(progressBarAnimation);
                         }
 
                         drink_goal = document.getString("drink_goal");
-                        if("empty".equals(drink_goal)){
+                        if ("empty".equals(drink_goal)) {
                             setupWaterGoal.setVisibility(View.VISIBLE);
-                        }else{
+                        } else {
                             setupWaterGoal.setVisibility(View.GONE);
                         }
 
                         cardStep.setClickable(true);
-                    }else {
+                    } else {
                         Log.d("LOGGER", "No such document drink, step,...");
                     }
                 } else {
@@ -642,17 +642,17 @@ public class HomeFragment extends Fragment implements SensorEventListener {
 //            backgroundThread.start();
 //        }
 
-            numStepsHomeFrag += (int) sensorEvent.values[0];
-            LocalDate today = LocalDate.now();
-            LocalDate monday = today.with(previousOrSame(MONDAY));
+        numStepsHomeFrag += (int) sensorEvent.values[0];
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
 
-            firestore = FirebaseFirestore.getInstance();
-            docRef = firestore.collection("daily").
-                    document("week-of-" + monday.toString()).
-                    collection(today.toString()).
-                    document(theTempEmail);
+        firestore = FirebaseFirestore.getInstance();
+        docRef = firestore.collection("daily").
+                document("week-of-" + monday.toString()).
+                collection(today.toString()).
+                document(theTempEmail);
 
-            docRef.update("steps",numStepsHomeFrag+"");
+        docRef.update("steps", numStepsHomeFrag + "");
 
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
