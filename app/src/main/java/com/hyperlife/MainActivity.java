@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String tempEmail = "tempEmail";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     public BottomNavigationView btmNav;
+    public FloatingActionButton btnSetWeight, btnDrinkWater;
+    private String numberOfCupHadDrink;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -74,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        btnSetWeight = findViewById(R.id.set_weigh);
+        btnDrinkWater = findViewById(R.id.drink_water_fltbtn);
+        addEvents();
 //        getSupportActionBar().hide();
         if(ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED){
@@ -110,7 +115,20 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            });
 //    }
-
+    private void addEvents(){
+        btnSetWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fillForm(Gravity.CENTER,2);
+            }
+        });
+        btnDrinkWater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                wateredit(Gravity.CENTER, 1);
+            }
+        });
+    }
     public void handleChangeFragment(int id) {
         if(id == R.id.nav_home){
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -162,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
         EditText editTextName = nameDialog.findViewById(R.id.edit_text_name);
         AppCompatButton cancelButton = nameDialog.findViewById(R.id.cancel_button_name_edit);
-        Button saveButton = nameDialog.findViewById(R.id.save_button_name_edit);
+        AppCompatButton saveButton = nameDialog.findViewById(R.id.save_button_name_edit);
 
         SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         String theTempEmail = sharedPreferences.getString("Email", "");
@@ -223,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
         CheckBox femaleCheckbox = genderDialog.findViewById(R.id.female_checkbox_edit);
         CheckBox maleCheckbox = genderDialog.findViewById(R.id.male_checkbox_edit);
         AppCompatButton cancelButton = genderDialog.findViewById(R.id.cancel_button_name_edit);
-        Button saveButton = genderDialog.findViewById(R.id.save_button_name_edit);
+        AppCompatButton saveButton = genderDialog.findViewById(R.id.save_button_name_edit);
 
         maleCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
@@ -326,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView datePicker = birthDayDialog.findViewById(R.id.date_picker_edit);
         AppCompatButton cancelButton = birthDayDialog.findViewById(R.id.cancel_button_name_edit);
-        Button saveButton = birthDayDialog.findViewById(R.id.save_button_name_edit);
+        AppCompatButton saveButton = birthDayDialog.findViewById(R.id.save_button_name_edit);
 
         datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -592,6 +610,138 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void wateredit(int gravity, int fragmentPos) {
+        final Dialog drinkWaterDialog = new Dialog(this);
+        drinkWaterDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        drinkWaterDialog.setContentView(R.layout.layout_water_edit);
+        Window window = drinkWaterDialog.getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = gravity;
+        window.setAttributes(windowAttributes);
+
+        if (Gravity.CENTER == gravity) {
+            drinkWaterDialog.setCancelable(true);
+        } else {
+            drinkWaterDialog.setCancelable(false);
+        }
+        AppCompatButton drinkWaterCancelBtn = drinkWaterDialog.findViewById(R.id.cancel_dialog2);
+        AppCompatButton drinkWaterBtn = drinkWaterDialog.findViewById(R.id.drink_btn_dialog);
+        TextView cupOfWater = drinkWaterDialog.findViewById(R.id.cup_of_water);
+        ImageView waterCupIcon = drinkWaterDialog.findViewById(R.id.water_cup_icon);
+
+        Runnable setUpWaterDialogRunnable = new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void run() {
+                SetUpWaterDialogFirebase(cupOfWater, waterCupIcon);
+            }
+        };
+
+        Thread backgroundThread = new Thread(setUpWaterDialogRunnable);
+        backgroundThread.start();
+
+        drinkWaterBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                String cupOfWaterLabel = String.valueOf(cupOfWater.getText());
+                if (!cupOfWaterLabel.equals("Set a Goal First")) {
+                    int updateDrinkValue = Integer.parseInt(cupOfWaterLabel) + 1;
+                    numberOfCupHadDrink = String.valueOf(updateDrinkValue);
+                    String updateDrinkValueToFirebase = String.valueOf(updateDrinkValue * 250);
+
+                    LocalDate today = LocalDate.now();
+                    LocalDate monday = today.with(previousOrSame(MONDAY));
+
+                    SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+                    String theTempEmail = sharedPreferences.getString("Email", "");
+
+                    firestore = FirebaseFirestore.getInstance();
+
+                    firestore.collection("daily").
+                            document("week-of-" + monday.toString()).
+                            collection(today.toString()).
+                            document(theTempEmail).
+                            update("drink", String.valueOf(updateDrinkValueToFirebase));
+                    cupOfWater.setText(numberOfCupHadDrink);
+                    startActivity(getIntent());
+                    finish();
+                    overridePendingTransition(0, 0);
+                }
+            }
+        });
+
+        drinkWaterCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drinkWaterDialog.dismiss();
+            }
+        });
+        drinkWaterDialog.show();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void SetUpWaterDialogFirebase(TextView cupOfWater, ImageView waterCupIcon) {
+        LocalDate today = LocalDate.now();
+        LocalDate monday = today.with(previousOrSame(MONDAY));
+
+        SharedPreferences sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
+        String theTempEmail = sharedPreferences.getString("Email", "");
+
+        firestore = FirebaseFirestore.getInstance();
+
+        docRef = firestore.collection("users").document(theTempEmail);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        String temp = document.getString("drink_goal");
+                        assert temp != null;
+                        if (temp.equals("empty")) {
+                            cupOfWater.setText("Set a Goal First");
+                            waterCupIcon.setVisibility(View.INVISIBLE);
+                        } else {
+                            docRef = firestore.collection("daily").
+                                    document("week-of-" + monday.toString()).
+                                    collection(today.toString()).
+                                    document(theTempEmail);
+
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document != null) {
+                                            String temp = document.getString("drink");
+                                            if (!"empty".equals(temp)) {
+                                                float waterHadDrink = Float.parseFloat(temp) / 250;
+                                                cupOfWater.setText(String.valueOf((int) waterHadDrink));
+                                                waterCupIcon.setVisibility(View.VISIBLE);
+                                            }
+                                        } else {
+                                            Log.d("LOGGER", "No such document");
+                                        }
+                                    } else {
+                                        Log.d("LOGGER", "get failed with ", task.getException());
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        });
 
     }
 

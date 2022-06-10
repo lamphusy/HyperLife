@@ -317,13 +317,13 @@ public class WaterActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(WaterActivity.this, "Đặt mục tiêu mới thành công", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(WaterActivity.this, "Set new goal successfully", Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(WaterActivity.this, "Đặt mục tiêu mới không thành công", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(WaterActivity.this, "Set new goal failed", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                         docRef = firestore.collection("daily").
