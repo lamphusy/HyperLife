@@ -146,7 +146,7 @@ public class ChangePassWordActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(tempEmail, MODE_PRIVATE);
         theTempEmail = sharedPreferences.getString("Email", "");
         firestore = FirebaseFirestore.getInstance();
-        txtOldPassword = (TextInputEditText) findViewById(R.id.txtEmailToGetPassword);
+        txtOldPassword = (TextInputEditText) findViewById(R.id.oldPassword);
         txtNewPassword = (TextInputEditText) findViewById(R.id.newPassword);
         txtConfirmPassword = (TextInputEditText) findViewById(R.id.confirmPassword);
         btnChangePassword = (Button) findViewById(R.id.btnChangePassword);
