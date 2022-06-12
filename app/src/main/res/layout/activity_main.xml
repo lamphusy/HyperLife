@@ -65,9 +65,8 @@
          >
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/pomodoro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#cc0000"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:src="@drawable/pomodoro"
             app:fab_colorNormal="@color/cardview_light_background"
             app:fab_colorPressed="#58C892"
