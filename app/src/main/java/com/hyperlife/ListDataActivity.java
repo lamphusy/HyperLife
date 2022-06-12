@@ -128,7 +128,6 @@ public class ListDataActivity extends YouTubeBaseActivity {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot document = task.getResult();
                                 if (document != null) {
-                                    Toast.makeText(getApplicationContext(), "Documentation got", Toast.LENGTH_LONG).show();
                                     exercise_contain = document.getString("exercise_contain");
                                     assert exercise_contain != null;
                                     exerciseList = exercise_contain.split("-");
@@ -309,7 +308,7 @@ public class ListDataActivity extends YouTubeBaseActivity {
                                         });
                                     }
                                 } else {
-                                    Log.d("LOGGER", "No such document list data");
+                                    Log.d("LOGGER", "No such document");
                                 }
                             } else {
                                 Log.d("LOGGER", "get failed with ", task.getException());

@@ -221,7 +221,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                         });
                                     }
                                 } else {
-                                    Log.d("LOGGER", "No such document workout");
+                                    Log.d("LOGGER", "No such document");
                                 }
                             } else {
                                 Log.d("LOGGER", "get failed with ", task.getException());
@@ -280,7 +280,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
                 final Context context = getApplication().getApplicationContext();
 
-                Glide.with(getApplicationContext())
+                Glide.with(WorkoutActivity.this)
                         .load(workoutUri.get(exercisePos))
                         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                         .listener(new RequestListener<Drawable>() {
@@ -462,7 +462,7 @@ public class WorkoutActivity extends AppCompatActivity {
 
             loadingIcon.setVisibility(View.VISIBLE);
 
-            Glide.with(getApplicationContext())
+            Glide.with(WorkoutActivity.this)
                     .load(workoutUri.get(exercisePos))
                     .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                     .listener(new RequestListener<Drawable>() {

@@ -5,10 +5,10 @@ public class ExerciseHistoryItem {
     private int image;
 
     public ExerciseHistoryItem(String workoutTitle
-            ,String workoutDay
-            ,String workoutTime
-            ,String workoutDuration
-            ,String workoutKcal
+            , String workoutDay
+            , String workoutTime
+            , String workoutDuration
+            , String workoutKcal
             , int mImage) {
         this.workoutTitle = workoutTitle;
         this.workoutDay = workoutDay;
