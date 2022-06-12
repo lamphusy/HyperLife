@@ -255,7 +255,7 @@ public class SleepTime extends AppCompatActivity {
 
         createNotificationChannel();
         Intent intent = new Intent(SleepTime.this,AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTime.this, 0, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(SleepTime.this, 0, intent, PendingIntent.FLAG_MUTABLE);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
