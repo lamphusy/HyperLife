@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String tempEmail = "tempEmail";
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     public BottomNavigationView btmNav;
-    public FloatingActionButton btnSetWeight, btnDrinkWater;
+    public FloatingActionButton btnSetWeight, btnDrinkWater, btnPomodoro;
     private String numberOfCupHadDrink;
 
 
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnSetWeight = findViewById(R.id.set_weigh);
         btnDrinkWater = findViewById(R.id.drink_water_fltbtn);
+        btnPomodoro = findViewById(R.id.pomodoro);
         addEvents();
 //        getSupportActionBar().hide();
         if(ContextCompat.checkSelfPermission(this,
@@ -126,6 +127,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 wateredit(Gravity.CENTER, 1);
+            }
+        });
+
+        btnPomodoro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, PomodoroActivity.class);
+                startActivity(intent);
+
             }
         });
     }

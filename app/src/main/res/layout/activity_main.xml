@@ -64,6 +64,15 @@
         android:contentDescription="add"
          >
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/pomodoro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#cc0000"
+            android:src="@drawable/pomodoro"
+            app:fab_colorNormal="@color/cardview_light_background"
+            app:fab_colorPressed="#58C892"
+            app:fab_size="normal" />
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/drink_water_fltbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

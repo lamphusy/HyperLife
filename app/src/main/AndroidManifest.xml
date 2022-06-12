@@ -24,6 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
         <activity
+            android:name=".PomodoroActivity"
+            android:exported="false" />
+        <activity
             android:name=".WorkoutActivity"
             android:exported="false" />
         <activity
@@ -47,7 +50,6 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".SplashScreenActivity2" />
         <activity android:name=".CompleteUserInfoActivity" />
-
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true">
