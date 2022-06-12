@@ -200,7 +200,7 @@ public class WaterActivity extends AppCompatActivity {
                     }
 
                     Intent intent = new Intent(WaterActivity.this, ReminderWaterReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(WaterActivity.this, 1, intent, 0);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(WaterActivity.this, 1, intent, PendingIntent.FLAG_MUTABLE);
                     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
@@ -221,7 +221,7 @@ public class WaterActivity extends AppCompatActivity {
 
                 }else{
                     Intent intent = new Intent(WaterActivity.this, ReminderWaterReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(WaterActivity.this, 1, intent, 0);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(WaterActivity.this, 1, intent, PendingIntent.FLAG_MUTABLE);
                     AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
                     alarmManager.cancel(pendingIntent);

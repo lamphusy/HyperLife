@@ -122,6 +122,10 @@ public class UserProfileFragment extends Fragment {
                                 } else {
                                     mGender.setText("Choose Gender");
                                 }
+                                Boolean tempSocial = document.getBoolean("Google||Facebook");
+                                if (tempSocial == true){
+                                    txtChangePassword.setVisibility(View.INVISIBLE);
+                                }
                             }
                         }
                     }

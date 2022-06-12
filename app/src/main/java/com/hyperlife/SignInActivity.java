@@ -387,7 +387,7 @@ public class SignInActivity extends AppCompatActivity {
         user.put("recent_workout", "empty");
         user.put("time_to_sleep", "empty");
         user.put("wake_time", "empty");
-
+        user.put("Google||Facebook", true);
         firestore.collection("users").document(googleEmail)
                 .set(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
