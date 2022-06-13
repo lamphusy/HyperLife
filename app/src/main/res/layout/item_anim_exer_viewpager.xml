@@ -10,22 +10,20 @@
         android:id="@+id/video_view_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true">
-
-        <ImageView
-            android:id="@+id/loading_icon_anim_exer_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/loading_icon_exer_list_data" />
-
-        <ImageView
-            android:id="@+id/gif_anim_view_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/gif_test_image_anim_exer_viewpager" />
-    </com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView>
+        android:layout_centerInParent="true"/>
     <!--        android:focusable="false"-->
     <!--        android:focusableInTouchMode="false"-->
     <!--        android:clickable="false" />-->
 
+    <ImageView
+        android:id="@+id/gif_anim_view_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/gif_test_image_anim_exer_viewpager" />
+
+    <ImageView
+        android:id="@+id/loading_icon_anim_exer_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/loading_icon_exer_list_data" />
 </RelativeLayout>
