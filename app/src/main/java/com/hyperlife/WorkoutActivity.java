@@ -196,7 +196,7 @@ public class WorkoutActivity extends AppCompatActivity {
                                                         exerciseTitleWorkout.setText(workoutTitleList.get(0));
                                                         afterStartWorkoutTitle.setText(workoutTitleList.get(exercisePos));
                                                         excerciseNextTitleWorkout.setText("Loading");
-                                                        Glide.with(WorkoutActivity.this)
+                                                        Glide.with(getApplicationContext())
                                                                 .load(workoutUri.get(0))
                                                                 .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
                                                                 .listener(new RequestListener<Drawable>() {
